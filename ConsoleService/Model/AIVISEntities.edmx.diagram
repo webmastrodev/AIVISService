@@ -25,7 +25,6 @@
         <EntityTypeShape EntityType="AIVISModel.Chrom_Sequence_Trails" Width="1.5" PointX="14.25" PointY="2.375" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Trails_Chrom_Intervention_Type" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Trails_Chrom_Sequence" />
-        <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Trails_Chrom_Sequence_Instrument" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Trails_Users" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Trails_Users1" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Trails_Users2" />

@@ -92,7 +92,7 @@ namespace ConsoleService
 
         public long ManageTrails(TrailDetails trailDetails)
         {
-            var Trail = aivisEntities.Chrom_Sequence_Trails.Where(w => w.Chrom_Trail_Number == trailDetails.ChromTrailNumber && trailDetails.SequenceId == trailDetails.SequenceId).FirstOrDefault();
+            var Trail = aivisEntities.Chrom_Sequence_Trails.Where(w => w.Chrom_Trail_Number !=null &&  w.Chrom_Trail_Number == trailDetails.ChromTrailNumber && w.SequenceId == trailDetails.SequenceId).FirstOrDefault();
             trailDetails.InterventionTypeId  = trailTypes.Where(w => w.Intervention == trailDetails.InterventionCode).Select(s => s.Id).FirstOrDefault();
 
 
@@ -113,6 +113,8 @@ namespace ConsoleService
                 Trail.TestName = trailDetails.TestName;
                 Trail.AddedOn = trailDetails.AddedOn;
                 Trail.ARNo = trailDetails.ARNo;
+                Trail.InstrumentId = trailDetails.InstrumentId;
+                Trail.Operator = trailDetails.Operator;
 
                 aivisEntities.Entry(Trail).State = EntityState.Added;
                 aivisEntities.SaveChanges();
@@ -124,7 +126,7 @@ namespace ConsoleService
 
         public long ManageInjectionTrails(TrailDetails trailDetails)
         {
-            var Trail = aivisEntities.Chrom_Sequence_Trails.Where(w => w.Chrom_Trail_Id == trailDetails.TrailId && trailDetails.SequenceId == trailDetails.SequenceId).FirstOrDefault();
+            var Trail = aivisEntities.Chrom_Sequence_Trails.Where(w => w.Chrom_Trail_Id == trailDetails.TrailId && w.SequenceId == trailDetails.SequenceId).FirstOrDefault();
             trailDetails.InterventionTypeId = trailTypes.Where(w => w.Intervention == trailDetails.InterventionCode).Select(s => s.Id).FirstOrDefault();
 
 
@@ -145,6 +147,8 @@ namespace ConsoleService
                 Trail.TestName = trailDetails.TestName;
                 Trail.AddedOn = trailDetails.AddedOn;
                 Trail.ARNo = trailDetails.ARNo;
+                Trail.InstrumentId = trailDetails.InstrumentId;
+                Trail.Operator = trailDetails.Operator;
 
                 aivisEntities.Entry(Trail).State = EntityState.Added;
                 aivisEntities.SaveChanges();
@@ -208,6 +212,7 @@ namespace ConsoleService
                             Trail.TestName = item.TestName;
                             Trail.AddedOn = item.AddedOn;
                             Trail.ARNo = item.ARNo;
+                            Trail.Operator = item.Operator;
 
                             aivisEntities.Entry(Trail).State = EntityState.Added;
 
@@ -231,6 +236,7 @@ namespace ConsoleService
                     TrailNew.TestName = trailDetails.TestName;
                     TrailNew.AddedOn = trailDetails.AddedOn;
                     TrailNew.ARNo = trailDetails.ARNo;
+                    TrailNew.Operator = trailDetails.Operator;
 
                     aivisEntities.Entry(TrailNew).State = EntityState.Added;
 

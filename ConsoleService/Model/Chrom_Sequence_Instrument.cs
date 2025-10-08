@@ -14,12 +14,6 @@ namespace ConsoleService.Model
     
     public partial class Chrom_Sequence_Instrument
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Chrom_Sequence_Instrument()
-        {
-            this.Chrom_Sequence_Trails = new HashSet<Chrom_Sequence_Trails>();
-        }
-    
         public long Id { get; set; }
         public int SequenceId { get; set; }
         public byte[] Instrument { get; set; }
@@ -28,7 +22,5 @@ namespace ConsoleService.Model
     
         public virtual User User { get; set; }
         public virtual Chrom_Sequence Chrom_Sequence { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Chrom_Sequence_Trails> Chrom_Sequence_Trails { get; set; }
     }
 }

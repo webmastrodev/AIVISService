@@ -27,6 +27,7 @@
           <Property Name="IsCritical" Type="bit" Nullable="false" />
           <Property Name="isActive" Type="bit" />
           <Property Name="ChartColorCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Chrom_Sequence">
           <Key>
@@ -57,7 +58,7 @@
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SequenceId" Type="int" Nullable="false" />
-          <Property Name="InstrumentId" Type="bigint" />
+          <Property Name="InstrumentId" Type="nvarchar" MaxLength="150" />
           <Property Name="InterventionTypeId" Type="int" />
           <Property Name="InjectionName" Type="nvarchar" MaxLength="150" />
           <Property Name="ProductName" Type="nvarchar" MaxLength="250" />
@@ -68,6 +69,7 @@
           <Property Name="Chrom_Trail_Id" Type="uniqueidentifier" />
           <Property Name="Trails" Type="nvarchar(max)" Nullable="false" />
           <Property Name="AddedOn" Type="datetime" />
+          <Property Name="Operator" Type="nvarchar" MaxLength="150" />
           <Property Name="ImportedBy" Type="int" />
           <Property Name="ImportedOn" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
@@ -218,18 +220,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Chrom_Sequence_Trails_Chrom_Sequence_Instrument">
-          <End Role="Chrom_Sequence_Instrument" Type="Self.Chrom_Sequence_Instrument" Multiplicity="0..1" />
-          <End Role="Chrom_Sequence_Trails" Type="Self.Chrom_Sequence_Trails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Chrom_Sequence_Instrument">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Chrom_Sequence_Trails">
-              <PropertyRef Name="InstrumentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Chrom_Sequence_Trails_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="Chrom_Sequence_Trails" Type="Self.Chrom_Sequence_Trails" Multiplicity="*" />
@@ -352,10 +342,6 @@
             <End Role="Chrom_Sequence" EntitySet="Chrom_Sequence" />
             <End Role="Chrom_Sequence_Trails" EntitySet="Chrom_Sequence_Trails" />
           </AssociationSet>
-          <AssociationSet Name="FK_Chrom_Sequence_Trails_Chrom_Sequence_Instrument" Association="Self.FK_Chrom_Sequence_Trails_Chrom_Sequence_Instrument">
-            <End Role="Chrom_Sequence_Instrument" EntitySet="Chrom_Sequence_Instrument" />
-            <End Role="Chrom_Sequence_Trails" EntitySet="Chrom_Sequence_Trails" />
-          </AssociationSet>
           <AssociationSet Name="FK_Chrom_Sequence_Trails_Users" Association="Self.FK_Chrom_Sequence_Trails_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Chrom_Sequence_Trails" EntitySet="Chrom_Sequence_Trails" />
@@ -414,6 +400,7 @@
           <Property Name="IsCritical" Type="Boolean" Nullable="false" />
           <Property Name="isActive" Type="Boolean" />
           <Property Name="ChartColorCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Chrom_Sequence_Trails" Relationship="AIVISModel.FK_Chrom_Sequence_Trails_Chrom_Intervention_Type" FromRole="Chrom_Intervention_Type" ToRole="Chrom_Sequence_Trails" />
         </EntityType>
         <EntityType Name="Chrom_Sequence_Instrument">
@@ -427,7 +414,6 @@
           <Property Name="ImportedOn" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="User" Relationship="Self.FK_Chrom_Sequence_Instrument_Users" FromRole="Chrom_Sequence_Instrument" ToRole="Users" />
           <NavigationProperty Name="Chrom_Sequence" Relationship="AIVISModel.FK_Chrom_Sequence_Instrument_Chrom_Sequence" FromRole="Chrom_Sequence_Instrument" ToRole="Chrom_Sequence" />
-          <NavigationProperty Name="Chrom_Sequence_Trails" Relationship="AIVISModel.FK_Chrom_Sequence_Trails_Chrom_Sequence_Instrument" FromRole="Chrom_Sequence_Instrument" ToRole="Chrom_Sequence_Trails" />
         </EntityType>
         <EntityType Name="Chrom_Server">
           <Key>
@@ -623,10 +609,6 @@
             <End Role="Chrom_Sequence" EntitySet="Chrom_Sequence" />
             <End Role="Chrom_Sequence_Trails" EntitySet="Chrom_Sequence_Trails" />
           </AssociationSet>
-          <AssociationSet Name="FK_Chrom_Sequence_Trails_Chrom_Sequence_Instrument" Association="AIVISModel.FK_Chrom_Sequence_Trails_Chrom_Sequence_Instrument">
-            <End Role="Chrom_Sequence_Instrument" EntitySet="Chrom_Sequence_Instrument" />
-            <End Role="Chrom_Sequence_Trails" EntitySet="Chrom_Sequence_Trails" />
-          </AssociationSet>
           <AssociationSet Name="FK_Chrom_Sequence_Trails_Users" Association="AIVISModel.FK_Chrom_Sequence_Trails_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="Chrom_Sequence_Trails" EntitySet="Chrom_Sequence_Trails" />
@@ -699,7 +681,7 @@
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SequenceId" Type="Int32" Nullable="false" />
-          <Property Name="InstrumentId" Type="Int64" />
+          <Property Name="InstrumentId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="InterventionTypeId" Type="Int32" />
           <Property Name="InjectionName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="ProductName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
@@ -710,6 +692,7 @@
           <Property Name="Chrom_Trail_Id" Type="Guid" />
           <Property Name="Trails" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AddedOn" Type="DateTime" Precision="3" />
+          <Property Name="Operator" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="ImportedBy" Type="Int32" />
           <Property Name="ImportedOn" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
@@ -722,7 +705,6 @@
           <Property Name="DeletedRemarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Chrom_Intervention_Type" Relationship="AIVISModel.FK_Chrom_Sequence_Trails_Chrom_Intervention_Type" FromRole="Chrom_Sequence_Trails" ToRole="Chrom_Intervention_Type" />
           <NavigationProperty Name="Chrom_Sequence" Relationship="AIVISModel.FK_Chrom_Sequence_Trails_Chrom_Sequence" FromRole="Chrom_Sequence_Trails" ToRole="Chrom_Sequence" />
-          <NavigationProperty Name="Chrom_Sequence_Instrument" Relationship="AIVISModel.FK_Chrom_Sequence_Trails_Chrom_Sequence_Instrument" FromRole="Chrom_Sequence_Trails" ToRole="Chrom_Sequence_Instrument" />
           <NavigationProperty Name="User" Relationship="AIVISModel.FK_Chrom_Sequence_Trails_Users" FromRole="Chrom_Sequence_Trails" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="AIVISModel.FK_Chrom_Sequence_Trails_Users1" FromRole="Chrom_Sequence_Trails" ToRole="User" />
           <NavigationProperty Name="User2" Relationship="AIVISModel.FK_Chrom_Sequence_Trails_Users2" FromRole="Chrom_Sequence_Trails" ToRole="User" />
@@ -748,18 +730,6 @@
             </Principal>
             <Dependent Role="Chrom_Sequence_Trails">
               <PropertyRef Name="SequenceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Chrom_Sequence_Trails_Chrom_Sequence_Instrument">
-          <End Type="AIVISModel.Chrom_Sequence_Instrument" Role="Chrom_Sequence_Instrument" Multiplicity="0..1" />
-          <End Type="AIVISModel.Chrom_Sequence_Trails" Role="Chrom_Sequence_Trails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Chrom_Sequence_Instrument">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Chrom_Sequence_Trails">
-              <PropertyRef Name="InstrumentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -821,6 +791,7 @@
           <EntitySetMapping Name="Chrom_Intervention_Type">
             <EntityTypeMapping TypeName="AIVISModel.Chrom_Intervention_Type">
               <MappingFragment StoreEntitySet="Chrom_Intervention_Type">
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
                 <ScalarProperty Name="ChartColorCode" ColumnName="ChartColorCode" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -927,6 +898,7 @@
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ImportedOn" ColumnName="ImportedOn" />
                 <ScalarProperty Name="ImportedBy" ColumnName="ImportedBy" />
+                <ScalarProperty Name="Operator" ColumnName="Operator" />
                 <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
                 <ScalarProperty Name="Trails" ColumnName="Trails" />
                 <ScalarProperty Name="Chrom_Trail_Id" ColumnName="Chrom_Trail_Id" />

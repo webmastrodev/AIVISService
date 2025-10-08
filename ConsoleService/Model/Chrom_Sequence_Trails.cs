@@ -16,7 +16,7 @@ namespace ConsoleService.Model
     {
         public long Id { get; set; }
         public int SequenceId { get; set; }
-        public Nullable<long> InstrumentId { get; set; }
+        public string InstrumentId { get; set; }
         public Nullable<int> InterventionTypeId { get; set; }
         public string InjectionName { get; set; }
         public string ProductName { get; set; }
@@ -27,6 +27,7 @@ namespace ConsoleService.Model
         public Nullable<System.Guid> Chrom_Trail_Id { get; set; }
         public string Trails { get; set; }
         public Nullable<System.DateTime> AddedOn { get; set; }
+        public string Operator { get; set; }
         public Nullable<int> ImportedBy { get; set; }
         public Nullable<System.DateTime> ImportedOn { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
@@ -40,7 +41,6 @@ namespace ConsoleService.Model
     
         public virtual Chrom_Intervention_Type Chrom_Intervention_Type { get; set; }
         public virtual Chrom_Sequence Chrom_Sequence { get; set; }
-        public virtual Chrom_Sequence_Instrument Chrom_Sequence_Instrument { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
         public virtual User User2 { get; set; }

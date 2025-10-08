@@ -26,6 +26,7 @@ namespace ConsoleService.Model
         public bool IsCritical { get; set; }
         public Nullable<bool> isActive { get; set; }
         public string ChartColorCode { get; set; }
+        public string DisplayName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chrom_Sequence_Trails> Chrom_Sequence_Trails { get; set; }

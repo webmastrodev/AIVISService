@@ -10,7 +10,7 @@ namespace ConsoleService.Core.Dtos
     {
         public long Id { get; set; }
         public int SequenceId { get; set; }
-        public Nullable<long> InstrumentId { get; set; }
+        public string InstrumentId { get; set; }
         public Nullable<int> InterventionTypeId { get; set; }
         public string InjectionName { get; set; }
         public int ChromTrailNumber { get; set; }
@@ -33,5 +33,7 @@ namespace ConsoleService.Core.Dtos
         public string ARNo { get; set; }
 
         public Nullable<Guid> TrailId { get; set; }
+
+        public string Operator { get; set; }
     }
 }
