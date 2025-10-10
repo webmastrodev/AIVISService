@@ -25,6 +25,8 @@ namespace ConsoleService
         int ServiceUserId = int.Parse(ConfigurationManager.AppSettings["ServiceUser"]);
         string SequenceNotSubmittedTrailType = ConfigurationManager.AppSettings["SequenceNotSubmittedTrailType"];
         string SequenceNotReviewedTrailType = ConfigurationManager.AppSettings["SequenceNotReviewedTrailType"];
+        string SiteName = ConfigurationManager.AppSettings["SiteName"];
+
 
         /* NOT FOUND FIELD
          * Batch No
