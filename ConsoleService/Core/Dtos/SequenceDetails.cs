@@ -16,6 +16,8 @@ namespace ConsoleService.Core.Dtos
         public System.DateTime ImportedOn { get; set; }
         public bool IsActive { get; set; }
         public Nullable<int> Status { get; set; }
+
+        public int SiteId { get; set; }
        
     }
 }

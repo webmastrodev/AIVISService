@@ -44,6 +44,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
@@ -55,7 +56,6 @@
     <Reference Include="Thermo.Chromeleon.Sdk, Version=7.2.0.3603, Culture=neutral, PublicKeyToken=f1413f165c7768f2, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChromeleonService_Old.cs" />
     <Compile Include="ChromeleonService.cs" />
     <Compile Include="Core\Constants.cs" />
     <Compile Include="Core\Dtos\SequenceDetails.cs" />
@@ -95,6 +95,12 @@
       <DependentUpon>AIVISEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Role.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Site.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SiteClient.cs">
       <DependentUpon>AIVISEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\User.cs">
