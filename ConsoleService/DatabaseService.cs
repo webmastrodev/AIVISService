@@ -22,15 +22,17 @@ namespace ConsoleService
             trailTypes = GetTrailTypes();
         }
 
-        public int ManageChromeServe(IDataVaultServer server, int UserId)
+
+        public int ManageChromeServe(IDataVaultServer server, int SiteId, int UserId)
         {
-            var Server = aivisEntities.Chrom_Server.Where(w => w.ServerName == server.Name).FirstOrDefault();
+            var Server = aivisEntities.Chrom_Server.Where(w => w.ServerName == server.Name && w.SiteId == SiteId).FirstOrDefault();
 
             if (Server == null)
             {
                 Server = new Model.Chrom_Server();
                 Server.ServerName = server.Name;
                 Server.ServerUri = server.Url.ToString();
+                Server.SiteId = SiteId;
                 Server.ImportedBy = UserId;
                 Server.ImportedOn = DateTime.Now;
                 Server.IsActive = true;
@@ -42,10 +44,60 @@ namespace ConsoleService
 
         }
 
-
-        public int ManageDataVault(IDataVault dataVault, int ServeId, int UserId)
+        public int CheckAndRegisterClient(string SiteCode, string ClientUID)
         {
-            var Vault = aivisEntities.Chrom_DataVault.Where(w => w.DataVault == dataVault.Name && w.ServerId == ServeId).FirstOrDefault();
+            var Site = aivisEntities.Sites.Where(w => w.SiteCode == SiteCode).FirstOrDefault();
+
+            if (Site != null)
+            {
+                var ClientExists = aivisEntities.SiteClients.Where(w => w.SiteId == Site.Id).ToList();
+
+                if (Site.MaxClientAllowed != 0)
+                {
+                    if (ClientExists.Count() < Site.MaxClientAllowed)
+                    {
+                        var SiteClinet = ClientExists.Where(w => w.HDSerialId == ClientUID).FirstOrDefault();
+
+                        if (SiteClinet == null)
+                        {
+                            return AddClient(Site.Id, ClientUID);
+                        }
+                        else
+                        {
+                            return SiteClinet.Id;
+                        }
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                else
+                {
+                    return Site.Id;
+                }
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+
+        private int AddClient(int SiteId, string ClientUID)
+        {
+            var SiteClient = new Model.SiteClient();
+            SiteClient.SiteId = SiteId;
+            SiteClient.HDSerialId = ClientUID;
+
+            aivisEntities.SiteClients.Add(SiteClient);
+            aivisEntities.SaveChanges();
+            return SiteClient.Id;
+        }
+
+        public int ManageDataVault(IDataVault dataVault, int ServeId, int SiteId, int UserId)
+        {
+            var Vault = aivisEntities.Chrom_DataVault.Where(w => w.DataVault == dataVault.Name && w.ServerId == ServeId && w.SiteId == SiteId).FirstOrDefault();
 
             if (Vault == null)
             {
@@ -56,6 +108,7 @@ namespace ConsoleService
                 Vault.ImportedBy = UserId;
                 Vault.ImportedOn = DateTime.Now;
                 Vault.IsActive = true;
+                Vault.SiteId = SiteId;
                 aivisEntities.Entry(Vault).State = EntityState.Added;
                 aivisEntities.SaveChanges();
             }
@@ -66,7 +119,7 @@ namespace ConsoleService
 
         public int ManageSequence(SequenceDetails sequenceDetails)
         {
-            var Sequence = aivisEntities.Chrom_Sequence.Where(w => w.SequenceNumber == sequenceDetails.SequenceNumber && w.DataVaultId == sequenceDetails.DataVaultId).FirstOrDefault();
+            var Sequence = aivisEntities.Chrom_Sequence.Where(w => w.SequenceNumber == sequenceDetails.SequenceNumber && w.DataVaultId == sequenceDetails.DataVaultId && w.SiteId == sequenceDetails.SiteId).FirstOrDefault();
 
             if (Sequence == null)
             {
@@ -77,6 +130,7 @@ namespace ConsoleService
                 Sequence.ImportedBy = sequenceDetails.ImportedBy;
                 Sequence.ImportedOn = sequenceDetails.ImportedOn;
                 Sequence.IsActive = sequenceDetails.IsActive;
+                Sequence.SiteId = sequenceDetails.SiteId;
                 aivisEntities.Entry(Sequence).State = EntityState.Added;
                 aivisEntities.SaveChanges();
             }

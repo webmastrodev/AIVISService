@@ -5,29 +5,32 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="094fb638d22542e984d5695000067f5b" Name="Diagram1">
-        <EntityTypeShape EntityType="AIVISModel.Chrom_DataVault" Width="1.5" PointX="7.5" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="AIVISModel.Chrom_Intervention_Type" Width="1.5" PointX="12" PointY="1.875" IsExpanded="true" />
         <EntityTypeShape EntityType="AIVISModel.Chrom_Sequence_Instrument" Width="1.5" PointX="12" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="AIVISModel.Chrom_Server" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AIVISModel.Role" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="AIVISModel.User" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
         <EntityTypeShape EntityType="AIVISModel.Users_Credentials" Width="1.5" PointX="5.75" PointY="11.125" IsExpanded="true" />
-        <AssociationConnector Association="AIVISModel.FK_Chrom_DataVault_Chrom_Server" ManuallyRouted="false" />
-        <AssociationConnector Association="AIVISModel.FK_Chrom_DataVault_Users" ManuallyRouted="false" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Instrument_Users" ManuallyRouted="false" />
-        <AssociationConnector Association="AIVISModel.FK_Chrom_Server_Users" ManuallyRouted="false" />
         <AssociationConnector Association="AIVISModel.FK_Users_Roles" ManuallyRouted="false" />
         <AssociationConnector Association="AIVISModel.FK_Users_Credentials_Users" ManuallyRouted="false" />
         <EntityTypeShape EntityType="AIVISModel.Chrom_Sequence" Width="1.5" PointX="9.75" PointY="5.25" />
-        <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Chrom_DataVault" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Instrument_Chrom_Sequence" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Users" />
+        <EntityTypeShape EntityType="AIVISModel.SiteClient" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="AIVISModel.Site" Width="1.5" PointX="0.75" PointY="0.875" />
+        <AssociationConnector Association="AIVISModel.FK_SiteClients_Sites" />
         <EntityTypeShape EntityType="AIVISModel.Chrom_Sequence_Trails" Width="1.5" PointX="14.25" PointY="2.375" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Trails_Chrom_Intervention_Type" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Trails_Chrom_Sequence" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Trails_Users" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Trails_Users1" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Trails_Users2" />
+        <EntityTypeShape EntityType="AIVISModel.Chrom_DataVault" Width="1.5" PointX="7.5" PointY="5.375" />
+        <EntityTypeShape EntityType="AIVISModel.Chrom_Server" Width="1.5" PointX="5.25" PointY="5.5" />
+        <AssociationConnector Association="AIVISModel.FK_Chrom_DataVault_Chrom_Server" />
+        <AssociationConnector Association="AIVISModel.FK_Chrom_DataVault_Users" />
+        <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Chrom_DataVault" />
+        <AssociationConnector Association="AIVISModel.FK_Chrom_Server_Users" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

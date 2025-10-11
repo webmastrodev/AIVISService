@@ -16,6 +16,7 @@ using Thermo.Chromeleon.Sdk.Interfaces.Data.Collections;
 using ConsoleService.Core.Dtos;
 using ConsoleService.Core;
 using Thermo.Chromeleon.Sdk.Interfaces.Types;
+using System.Management;
 
 
 namespace ConsoleService
@@ -25,6 +26,9 @@ namespace ConsoleService
         int ServiceUserId = int.Parse(ConfigurationManager.AppSettings["ServiceUser"]);
         string SequenceNotSubmittedTrailType = ConfigurationManager.AppSettings["SequenceNotSubmittedTrailType"];
         string SequenceNotReviewedTrailType = ConfigurationManager.AppSettings["SequenceNotReviewedTrailType"];
+        string SiteCode = ConfigurationManager.AppSettings["SiteCode"];
+        int SiteId = 0;
+
 
         /* NOT FOUND FIELD
          * Batch No
@@ -39,9 +43,31 @@ namespace ConsoleService
          * 
         */
 
+        public string GetHDDSerialNo()
+        {
+            string hddSerialNo = string.Empty;
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_DiskDrive");
+            ManagementObjectCollection mbsList = searcher.Get();
+
+            foreach (ManagementObject mo in mbsList)
+            {
+                if (mo["SerialNumber"] != null)
+                {
+                    hddSerialNo = mo["SerialNumber"].ToString();
+                    break; // Assuming only one HDD serial number is needed
+                }
+            }
+            return hddSerialNo;
+        }
+
 
         public void ProcessBackService()
         {
+            SiteId = new DatabaseService().CheckAndRegisterClient(SiteCode, GetHDDSerialNo());
+
+            if (SiteId == 0)
+                return;
+
             //define scope
             using (var scope = new CmSdkScope())
             {
@@ -57,7 +83,7 @@ namespace ConsoleService
 
                     foreach (var server in itemFactory.DataVaultServers)
                     {
-                        int ServerId = new DatabaseService().ManageChromeServe(server, ServiceUserId);
+                        int ServerId = new DatabaseService().ManageChromeServe(server, SiteId, ServiceUserId);
 
                         //get server
                         Console.WriteLine("Server: " + server.Name + "   Server URL: " + server.Url);
@@ -65,7 +91,7 @@ namespace ConsoleService
                         //get server and data vault
                         foreach (var datavault in server.DataVaults)
                         {
-                            int DataVaultId = new DatabaseService().ManageDataVault(datavault, ServerId, ServiceUserId);
+                            int DataVaultId = new DatabaseService().ManageDataVault(datavault, ServerId, SiteId, ServiceUserId);
                             Console.WriteLine("Data Vault: " + datavault.Name + "   Data Vault URL: " + datavault.Url);
 
                             ProcessDataVault(datavault, DataVaultId, itemFactory);
@@ -104,13 +130,6 @@ namespace ConsoleService
                                 //var TestSeq = item.RelativePath as ISequence;
 
                                 var DeleteFolder = Folders.Where(w => w.Name == "$RecycleBin$").FirstOrDefault();
-
-                                
-
-                                //if (DeleteFolder != null)
-                                //{
-                                //    DeleteFolder.
-                                //}
                             }
 
                         }
@@ -152,6 +171,7 @@ namespace ConsoleService
                             sequenceDetails.ImportedBy = ServiceUserId;
                             sequenceDetails.ImportedOn = DateTime.Now;
                             sequenceDetails.IsActive = true;
+                            sequenceDetails.SiteId = SiteId;
 
                             int SequenceId = new DatabaseService().ManageSequence(sequenceDetails);
 

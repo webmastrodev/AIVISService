@@ -16,6 +16,7 @@
           <Property Name="ImportedBy" Type="int" Nullable="false" />
           <Property Name="ImportedOn" Type="datetime" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="SiteId" Type="int" />
         </EntityType>
         <EntityType Name="Chrom_Intervention_Type">
           <Key>
@@ -34,6 +35,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiteId" Type="int" />
           <Property Name="DataVaultId" Type="int" Nullable="false" />
           <Property Name="SequenceNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SequenceUri" Type="nvarchar" MaxLength="300" Nullable="false" />
@@ -91,6 +93,7 @@
           <Property Name="ImportedBy" Type="int" Nullable="false" />
           <Property Name="ImportedOn" Type="datetime" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="SiteId" Type="int" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -107,6 +110,24 @@
           <Property Name="AddedOn" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SiteClients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiteId" Type="int" Nullable="false" />
+          <Property Name="HDSerialId" Type="nvarchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sites">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiteName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="SiteCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MaxClientAllowed" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -280,6 +301,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SiteClients_Sites">
+          <End Role="Sites" Type="Self.Sites" Multiplicity="1" />
+          <End Role="SiteClients" Type="Self.SiteClients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sites">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SiteClients">
+              <PropertyRef Name="SiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Users_Credentials_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Users_Credentials" Type="Self.Users_Credentials" Multiplicity="*" />
@@ -312,6 +345,8 @@
           <EntitySet Name="Chrom_Sequence_Trails" EntityType="Self.Chrom_Sequence_Trails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Chrom_Server" EntityType="Self.Chrom_Server" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SiteClients" EntityType="Self.SiteClients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sites" EntityType="Self.Sites" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users_Credentials" EntityType="Self.Users_Credentials" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Chrom_DataVault_Chrom_Server" Association="Self.FK_Chrom_DataVault_Chrom_Server">
@@ -362,6 +397,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Chrom_Server" EntitySet="Chrom_Server" />
           </AssociationSet>
+          <AssociationSet Name="FK_SiteClients_Sites" Association="Self.FK_SiteClients_Sites">
+            <End Role="Sites" EntitySet="Sites" />
+            <End Role="SiteClients" EntitySet="SiteClients" />
+          </AssociationSet>
           <AssociationSet Name="FK_Users_Credentials_Users" Association="Self.FK_Users_Credentials_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Users_Credentials" EntitySet="Users_Credentials" />
@@ -375,21 +414,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AIVISModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Chrom_DataVault">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ServerId" Type="Int32" Nullable="false" />
-          <Property Name="DataVault" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DataVaultUri" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ImportedBy" Type="Int32" Nullable="false" />
-          <Property Name="ImportedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Chrom_Server" Relationship="Self.FK_Chrom_DataVault_Chrom_Server" FromRole="Chrom_DataVault" ToRole="Chrom_Server" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Chrom_DataVault_Users" FromRole="Chrom_DataVault" ToRole="Users" />
-          <NavigationProperty Name="Chrom_Sequence" Relationship="AIVISModel.FK_Chrom_Sequence_Chrom_DataVault" FromRole="Chrom_DataVault" ToRole="Chrom_Sequence" />
-        </EntityType>
         <EntityType Name="Chrom_Intervention_Type">
           <Key>
             <PropertyRef Name="Id" />
@@ -414,19 +438,6 @@
           <Property Name="ImportedOn" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="User" Relationship="Self.FK_Chrom_Sequence_Instrument_Users" FromRole="Chrom_Sequence_Instrument" ToRole="Users" />
           <NavigationProperty Name="Chrom_Sequence" Relationship="AIVISModel.FK_Chrom_Sequence_Instrument_Chrom_Sequence" FromRole="Chrom_Sequence_Instrument" ToRole="Chrom_Sequence" />
-        </EntityType>
-        <EntityType Name="Chrom_Server">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ServerName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ServerUri" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ImportedBy" Type="Int32" Nullable="false" />
-          <Property Name="ImportedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Chrom_DataVault" Relationship="Self.FK_Chrom_DataVault_Chrom_Server" FromRole="Chrom_Server" ToRole="Chrom_DataVault" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Chrom_Server_Users" FromRole="Chrom_Server" ToRole="Users" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -461,15 +472,15 @@
           <Property Name="AddedOn" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Chrom_DataVault" Relationship="Self.FK_Chrom_DataVault_Users" FromRole="Users" ToRole="Chrom_DataVault" />
           <NavigationProperty Name="Chrom_Sequence_Instrument" Relationship="Self.FK_Chrom_Sequence_Instrument_Users" FromRole="Users" ToRole="Chrom_Sequence_Instrument" />
-          <NavigationProperty Name="Chrom_Server" Relationship="Self.FK_Chrom_Server_Users" FromRole="Users" ToRole="Chrom_Server" />
           <NavigationProperty Name="Role" Relationship="Self.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
           <NavigationProperty Name="Users_Credentials" Relationship="Self.FK_Users_Credentials_Users" FromRole="Users" ToRole="Users_Credentials" />
           <NavigationProperty Name="Chrom_Sequence" Relationship="AIVISModel.FK_Chrom_Sequence_Users" FromRole="User" ToRole="Chrom_Sequence" />
           <NavigationProperty Name="Chrom_Sequence_Trails" Relationship="AIVISModel.FK_Chrom_Sequence_Trails_Users" FromRole="User" ToRole="Chrom_Sequence_Trails" />
           <NavigationProperty Name="Chrom_Sequence_Trails1" Relationship="AIVISModel.FK_Chrom_Sequence_Trails_Users1" FromRole="User" ToRole="Chrom_Sequence_Trails" />
           <NavigationProperty Name="Chrom_Sequence_Trails2" Relationship="AIVISModel.FK_Chrom_Sequence_Trails_Users2" FromRole="User" ToRole="Chrom_Sequence_Trails" />
+          <NavigationProperty Name="Chrom_DataVault" Relationship="AIVISModel.FK_Chrom_DataVault_Users" FromRole="User" ToRole="Chrom_DataVault" />
+          <NavigationProperty Name="Chrom_Server" Relationship="AIVISModel.FK_Chrom_Server_Users" FromRole="User" ToRole="Chrom_Server" />
           </EntityType>
         <EntityType Name="Users_Credentials">
           <Key>
@@ -483,30 +494,6 @@
           <Property Name="PasswordChangedOn" Type="DateTime" Precision="3" />
           <NavigationProperty Name="User" Relationship="Self.FK_Users_Credentials_Users" FromRole="Users_Credentials" ToRole="Users" />
         </EntityType>
-        <Association Name="FK_Chrom_DataVault_Chrom_Server">
-          <End Role="Chrom_Server" Type="Self.Chrom_Server" Multiplicity="1" />
-          <End Role="Chrom_DataVault" Type="Self.Chrom_DataVault" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Chrom_Server">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Chrom_DataVault">
-              <PropertyRef Name="ServerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Chrom_DataVault_Users">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="Chrom_DataVault" Type="Self.Chrom_DataVault" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Chrom_DataVault">
-              <PropertyRef Name="ImportedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Chrom_Sequence_Instrument_Users">
           <End Role="Users" Type="Self.User" Multiplicity="1" />
           <End Role="Chrom_Sequence_Instrument" Type="Self.Chrom_Sequence_Instrument" Multiplicity="*" />
@@ -515,18 +502,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Chrom_Sequence_Instrument">
-              <PropertyRef Name="ImportedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Chrom_Server_Users">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="Chrom_Server" Type="Self.Chrom_Server" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Chrom_Server">
               <PropertyRef Name="ImportedBy" />
             </Dependent>
           </ReferentialConstraint>
@@ -556,28 +531,14 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="AIVISEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Chrom_DataVault" EntityType="Self.Chrom_DataVault" />
           <EntitySet Name="Chrom_Intervention_Type" EntityType="Self.Chrom_Intervention_Type" />
           <EntitySet Name="Chrom_Sequence_Instrument" EntityType="Self.Chrom_Sequence_Instrument" />
-          <EntitySet Name="Chrom_Server" EntityType="Self.Chrom_Server" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="Users_Credentials" EntityType="Self.Users_Credentials" />
-          <AssociationSet Name="FK_Chrom_DataVault_Chrom_Server" Association="Self.FK_Chrom_DataVault_Chrom_Server">
-            <End Role="Chrom_Server" EntitySet="Chrom_Server" />
-            <End Role="Chrom_DataVault" EntitySet="Chrom_DataVault" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Chrom_DataVault_Users" Association="Self.FK_Chrom_DataVault_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Chrom_DataVault" EntitySet="Chrom_DataVault" />
-          </AssociationSet>
           <AssociationSet Name="FK_Chrom_Sequence_Instrument_Users" Association="Self.FK_Chrom_Sequence_Instrument_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Chrom_Sequence_Instrument" EntitySet="Chrom_Sequence_Instrument" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Chrom_Server_Users" Association="Self.FK_Chrom_Server_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Chrom_Server" EntitySet="Chrom_Server" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_Roles" Association="Self.FK_Users_Roles">
             <End Role="Roles" EntitySet="Roles" />
@@ -588,10 +549,6 @@
             <End Role="Users_Credentials" EntitySet="Users_Credentials" />
           </AssociationSet>
           <EntitySet Name="Chrom_Sequence" EntityType="AIVISModel.Chrom_Sequence" />
-          <AssociationSet Name="FK_Chrom_Sequence_Chrom_DataVault" Association="AIVISModel.FK_Chrom_Sequence_Chrom_DataVault">
-            <End Role="Chrom_DataVault" EntitySet="Chrom_DataVault" />
-            <End Role="Chrom_Sequence" EntitySet="Chrom_Sequence" />
-          </AssociationSet>
           <AssociationSet Name="FK_Chrom_Sequence_Instrument_Chrom_Sequence" Association="AIVISModel.FK_Chrom_Sequence_Instrument_Chrom_Sequence">
             <End Role="Chrom_Sequence" EntitySet="Chrom_Sequence" />
             <End Role="Chrom_Sequence_Instrument" EntitySet="Chrom_Sequence_Instrument" />
@@ -599,6 +556,12 @@
           <AssociationSet Name="FK_Chrom_Sequence_Users" Association="AIVISModel.FK_Chrom_Sequence_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="Chrom_Sequence" EntitySet="Chrom_Sequence" />
+          </AssociationSet>
+          <EntitySet Name="SiteClients" EntityType="AIVISModel.SiteClient" />
+          <EntitySet Name="Sites" EntityType="AIVISModel.Site" />
+          <AssociationSet Name="FK_SiteClients_Sites" Association="AIVISModel.FK_SiteClients_Sites">
+            <End Role="Site" EntitySet="Sites" />
+            <End Role="SiteClient" EntitySet="SiteClients" />
           </AssociationSet>
           <EntitySet Name="Chrom_Sequence_Trails" EntityType="AIVISModel.Chrom_Sequence_Trails" />
           <AssociationSet Name="FK_Chrom_Sequence_Trails_Chrom_Intervention_Type" Association="AIVISModel.FK_Chrom_Sequence_Trails_Chrom_Intervention_Type">
@@ -621,6 +584,24 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Chrom_Sequence_Trails" EntitySet="Chrom_Sequence_Trails" />
           </AssociationSet>
+          <EntitySet Name="Chrom_DataVault" EntityType="AIVISModel.Chrom_DataVault" />
+          <EntitySet Name="Chrom_Server" EntityType="AIVISModel.Chrom_Server" />
+          <AssociationSet Name="FK_Chrom_DataVault_Chrom_Server" Association="AIVISModel.FK_Chrom_DataVault_Chrom_Server">
+            <End Role="Chrom_Server" EntitySet="Chrom_Server" />
+            <End Role="Chrom_DataVault" EntitySet="Chrom_DataVault" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_DataVault_Users" Association="AIVISModel.FK_Chrom_DataVault_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Chrom_DataVault" EntitySet="Chrom_DataVault" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_Sequence_Chrom_DataVault" Association="AIVISModel.FK_Chrom_Sequence_Chrom_DataVault">
+            <End Role="Chrom_DataVault" EntitySet="Chrom_DataVault" />
+            <End Role="Chrom_Sequence" EntitySet="Chrom_Sequence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_Server_Users" Association="AIVISModel.FK_Chrom_Server_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Chrom_Server" EntitySet="Chrom_Server" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Chrom_Sequence">
           <Key>
@@ -634,23 +615,12 @@
           <Property Name="ImportedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="Status" Type="Int32" />
-          <NavigationProperty Name="Chrom_DataVault" Relationship="AIVISModel.FK_Chrom_Sequence_Chrom_DataVault" FromRole="Chrom_Sequence" ToRole="Chrom_DataVault" />
           <NavigationProperty Name="Chrom_Sequence_Instrument" Relationship="AIVISModel.FK_Chrom_Sequence_Instrument_Chrom_Sequence" FromRole="Chrom_Sequence" ToRole="Chrom_Sequence_Instrument" />
           <NavigationProperty Name="User" Relationship="AIVISModel.FK_Chrom_Sequence_Users" FromRole="Chrom_Sequence" ToRole="User" />
           <NavigationProperty Name="Chrom_Sequence_Trails" Relationship="AIVISModel.FK_Chrom_Sequence_Trails_Chrom_Sequence" FromRole="Chrom_Sequence" ToRole="Chrom_Sequence_Trails" />
+          <Property Name="SiteId" Type="Int32" />
+          <NavigationProperty Name="Chrom_DataVault" Relationship="AIVISModel.FK_Chrom_Sequence_Chrom_DataVault" FromRole="Chrom_Sequence" ToRole="Chrom_DataVault" />
         </EntityType>
-        <Association Name="FK_Chrom_Sequence_Chrom_DataVault">
-          <End Type="AIVISModel.Chrom_DataVault" Role="Chrom_DataVault" Multiplicity="1" />
-          <End Type="AIVISModel.Chrom_Sequence" Role="Chrom_Sequence" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Chrom_DataVault">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Chrom_Sequence">
-              <PropertyRef Name="DataVaultId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Chrom_Sequence_Instrument_Chrom_Sequence">
           <End Type="AIVISModel.Chrom_Sequence" Role="Chrom_Sequence" Multiplicity="1" />
           <End Type="AIVISModel.Chrom_Sequence_Instrument" Role="Chrom_Sequence_Instrument" Multiplicity="*" />
@@ -672,6 +642,38 @@
             </Principal>
             <Dependent Role="Chrom_Sequence">
               <PropertyRef Name="ImportedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SiteClient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
+          <Property Name="HDSerialId" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Site" Relationship="AIVISModel.FK_SiteClients_Sites" FromRole="SiteClient" ToRole="Site" />
+        </EntityType>
+        <EntityType Name="Site">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiteName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="SiteCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MaxClientAllowed" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SiteClients" Relationship="AIVISModel.FK_SiteClients_Sites" FromRole="Site" ToRole="SiteClient" />
+        </EntityType>
+        <Association Name="FK_SiteClients_Sites">
+          <End Type="AIVISModel.Site" Role="Site" Multiplicity="1" />
+          <End Type="AIVISModel.SiteClient" Role="SiteClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Site">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SiteClient">
+              <PropertyRef Name="SiteId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -769,25 +771,90 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Chrom_DataVault">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServerId" Type="Int32" Nullable="false" />
+          <Property Name="DataVault" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="DataVaultUri" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ImportedBy" Type="Int32" Nullable="false" />
+          <Property Name="ImportedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="SiteId" Type="Int32" />
+          <NavigationProperty Name="Chrom_Server" Relationship="AIVISModel.FK_Chrom_DataVault_Chrom_Server" FromRole="Chrom_DataVault" ToRole="Chrom_Server" />
+          <NavigationProperty Name="User" Relationship="AIVISModel.FK_Chrom_DataVault_Users" FromRole="Chrom_DataVault" ToRole="User" />
+          <NavigationProperty Name="Chrom_Sequence" Relationship="AIVISModel.FK_Chrom_Sequence_Chrom_DataVault" FromRole="Chrom_DataVault" ToRole="Chrom_Sequence" />
+        </EntityType>
+        <EntityType Name="Chrom_Server">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServerName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ServerUri" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ImportedBy" Type="Int32" Nullable="false" />
+          <Property Name="ImportedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="SiteId" Type="Int32" />
+          <NavigationProperty Name="Chrom_DataVault" Relationship="AIVISModel.FK_Chrom_DataVault_Chrom_Server" FromRole="Chrom_Server" ToRole="Chrom_DataVault" />
+          <NavigationProperty Name="User" Relationship="AIVISModel.FK_Chrom_Server_Users" FromRole="Chrom_Server" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Chrom_DataVault_Chrom_Server">
+          <End Type="AIVISModel.Chrom_Server" Role="Chrom_Server" Multiplicity="1" />
+          <End Type="AIVISModel.Chrom_DataVault" Role="Chrom_DataVault" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chrom_Server">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_DataVault">
+              <PropertyRef Name="ServerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_DataVault_Users">
+          <End Type="AIVISModel.User" Role="User" Multiplicity="1" />
+          <End Type="AIVISModel.Chrom_DataVault" Role="Chrom_DataVault" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_DataVault">
+              <PropertyRef Name="ImportedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_Sequence_Chrom_DataVault">
+          <End Type="AIVISModel.Chrom_DataVault" Role="Chrom_DataVault" Multiplicity="1" />
+          <End Type="AIVISModel.Chrom_Sequence" Role="Chrom_Sequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chrom_DataVault">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_Sequence">
+              <PropertyRef Name="DataVaultId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_Server_Users">
+          <End Type="AIVISModel.User" Role="User" Multiplicity="1" />
+          <End Type="AIVISModel.Chrom_Server" Role="Chrom_Server" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_Server">
+              <PropertyRef Name="ImportedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="AIVISModelStoreContainer" CdmEntityContainer="AIVISEntities">
-          <EntitySetMapping Name="Chrom_DataVault">
-            <EntityTypeMapping TypeName="AIVISModel.Chrom_DataVault">
-              <MappingFragment StoreEntitySet="Chrom_DataVault">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ServerId" ColumnName="ServerId" />
-                <ScalarProperty Name="DataVault" ColumnName="DataVault" />
-                <ScalarProperty Name="DataVaultUri" ColumnName="DataVaultUri" />
-                <ScalarProperty Name="ImportedBy" ColumnName="ImportedBy" />
-                <ScalarProperty Name="ImportedOn" ColumnName="ImportedOn" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Chrom_Intervention_Type">
             <EntityTypeMapping TypeName="AIVISModel.Chrom_Intervention_Type">
               <MappingFragment StoreEntitySet="Chrom_Intervention_Type">
@@ -809,18 +876,6 @@
                 <ScalarProperty Name="Instrument" ColumnName="Instrument" />
                 <ScalarProperty Name="ImportedBy" ColumnName="ImportedBy" />
                 <ScalarProperty Name="ImportedOn" ColumnName="ImportedOn" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Chrom_Server">
-            <EntityTypeMapping TypeName="AIVISModel.Chrom_Server">
-              <MappingFragment StoreEntitySet="Chrom_Server">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ServerName" ColumnName="ServerName" />
-                <ScalarProperty Name="ServerUri" ColumnName="ServerUri" />
-                <ScalarProperty Name="ImportedBy" ColumnName="ImportedBy" />
-                <ScalarProperty Name="ImportedOn" ColumnName="ImportedOn" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -874,6 +929,7 @@
           <EntitySetMapping Name="Chrom_Sequence">
             <EntityTypeMapping TypeName="AIVISModel.Chrom_Sequence">
               <MappingFragment StoreEntitySet="Chrom_Sequence">
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="ImportedOn" ColumnName="ImportedOn" />
@@ -881,6 +937,26 @@
                 <ScalarProperty Name="SequenceUri" ColumnName="SequenceUri" />
                 <ScalarProperty Name="SequenceNumber" ColumnName="SequenceNumber" />
                 <ScalarProperty Name="DataVaultId" ColumnName="DataVaultId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SiteClients">
+            <EntityTypeMapping TypeName="AIVISModel.SiteClient">
+              <MappingFragment StoreEntitySet="SiteClients">
+                <ScalarProperty Name="HDSerialId" ColumnName="HDSerialId" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sites">
+            <EntityTypeMapping TypeName="AIVISModel.Site">
+              <MappingFragment StoreEntitySet="Sites">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="MaxClientAllowed" ColumnName="MaxClientAllowed" />
+                <ScalarProperty Name="SiteCode" ColumnName="SiteCode" />
+                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -911,6 +987,33 @@
                 <ScalarProperty Name="InterventionTypeId" ColumnName="InterventionTypeId" />
                 <ScalarProperty Name="InstrumentId" ColumnName="InstrumentId" />
                 <ScalarProperty Name="SequenceId" ColumnName="SequenceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Chrom_DataVault">
+            <EntityTypeMapping TypeName="AIVISModel.Chrom_DataVault">
+              <MappingFragment StoreEntitySet="Chrom_DataVault">
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ImportedOn" ColumnName="ImportedOn" />
+                <ScalarProperty Name="ImportedBy" ColumnName="ImportedBy" />
+                <ScalarProperty Name="DataVaultUri" ColumnName="DataVaultUri" />
+                <ScalarProperty Name="DataVault" ColumnName="DataVault" />
+                <ScalarProperty Name="ServerId" ColumnName="ServerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Chrom_Server">
+            <EntityTypeMapping TypeName="AIVISModel.Chrom_Server">
+              <MappingFragment StoreEntitySet="Chrom_Server">
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ImportedOn" ColumnName="ImportedOn" />
+                <ScalarProperty Name="ImportedBy" ColumnName="ImportedBy" />
+                <ScalarProperty Name="ServerUri" ColumnName="ServerUri" />
+                <ScalarProperty Name="ServerName" ColumnName="ServerName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

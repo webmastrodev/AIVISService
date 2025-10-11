@@ -25,14 +25,16 @@ namespace ConsoleService.Model
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Chrom_DataVault> Chrom_DataVault { get; set; }
         public virtual DbSet<Chrom_Intervention_Type> Chrom_Intervention_Type { get; set; }
         public virtual DbSet<Chrom_Sequence_Instrument> Chrom_Sequence_Instrument { get; set; }
-        public virtual DbSet<Chrom_Server> Chrom_Server { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Users_Credentials> Users_Credentials { get; set; }
         public virtual DbSet<Chrom_Sequence> Chrom_Sequence { get; set; }
+        public virtual DbSet<SiteClient> SiteClients { get; set; }
+        public virtual DbSet<Site> Sites { get; set; }
         public virtual DbSet<Chrom_Sequence_Trails> Chrom_Sequence_Trails { get; set; }
+        public virtual DbSet<Chrom_DataVault> Chrom_DataVault { get; set; }
+        public virtual DbSet<Chrom_Server> Chrom_Server { get; set; }
     }
 }
