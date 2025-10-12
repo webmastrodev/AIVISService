@@ -7,29 +7,32 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ConsoleService.Model
+namespace AivisService.Model
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Chrom_Server
+    public partial class Role
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Chrom_Server()
+        public Role()
         {
-            this.Chrom_DataVault = new HashSet<Chrom_DataVault>();
+            this.Users = new HashSet<User>();
         }
     
         public int Id { get; set; }
-        public string ServerName { get; set; }
-        public string ServerUri { get; set; }
-        public int ImportedBy { get; set; }
-        public System.DateTime ImportedOn { get; set; }
-        public bool IsActive { get; set; }
-        public int SiteId { get; set; }
+        public string Role1 { get; set; }
+        public bool IsSystemRole { get; set; }
+        public bool RequiredStrongPassword { get; set; }
+        public Nullable<bool> PasswordExpireRequired { get; set; }
+        public Nullable<int> PasswordExpiredDays { get; set; }
+        public bool IsDeleted { get; set; }
+        public Nullable<int> AddedBy { get; set; }
+        public Nullable<System.DateTime> AddedOn { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
+        public Nullable<System.DateTime> ModifiedOn { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Chrom_DataVault> Chrom_DataVault { get; set; }
-        public virtual User User { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

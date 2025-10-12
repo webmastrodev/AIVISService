@@ -1,15 +1,15 @@
-﻿using System;
+﻿using AivisService.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ConsoleService.Model;
+using AivisService.Core.Dtos;
 using Thermo.Chromeleon.Sdk.Common;
 using Thermo.Chromeleon.Sdk.Interfaces.Data;
 using System.Data.Entity;
-using ConsoleService.Core.Dtos;
 
-namespace ConsoleService
+namespace AivisService
 {
     public class DatabaseService
     {
@@ -149,8 +149,8 @@ namespace ConsoleService
 
         public long ManageTrails(TrailDetails trailDetails)
         {
-            var Trail = aivisEntities.Chrom_Sequence_Trails.Where(w => w.Chrom_Trail_Number !=null &&  w.Chrom_Trail_Number == trailDetails.ChromTrailNumber && w.SequenceId == trailDetails.SequenceId).FirstOrDefault();
-            trailDetails.InterventionTypeId  = trailTypes.Where(w => w.Intervention == trailDetails.InterventionCode).Select(s => s.Id).FirstOrDefault();
+            var Trail = aivisEntities.Chrom_Sequence_Trails.Where(w => w.Chrom_Trail_Number != null && w.Chrom_Trail_Number == trailDetails.ChromTrailNumber && w.SequenceId == trailDetails.SequenceId).FirstOrDefault();
+            trailDetails.InterventionTypeId = trailTypes.Where(w => w.Intervention == trailDetails.InterventionCode).Select(s => s.Id).FirstOrDefault();
 
 
             if (Trail == null)
@@ -306,7 +306,7 @@ namespace ConsoleService
             return trailDetails.Id;
         }
 
-        
+
 
 
     }

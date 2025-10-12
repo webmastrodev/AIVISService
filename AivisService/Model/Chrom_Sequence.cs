@@ -7,29 +7,35 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ConsoleService.Model
+namespace AivisService.Model
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Chrom_Server
+    public partial class Chrom_Sequence
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Chrom_Server()
+        public Chrom_Sequence()
         {
-            this.Chrom_DataVault = new HashSet<Chrom_DataVault>();
+            this.Chrom_Sequence_Instrument = new HashSet<Chrom_Sequence_Instrument>();
+            this.Chrom_Sequence_Trails = new HashSet<Chrom_Sequence_Trails>();
         }
     
         public int Id { get; set; }
-        public string ServerName { get; set; }
-        public string ServerUri { get; set; }
+        public int SiteId { get; set; }
+        public int DataVaultId { get; set; }
+        public string SequenceNumber { get; set; }
+        public string SequenceUri { get; set; }
         public int ImportedBy { get; set; }
         public System.DateTime ImportedOn { get; set; }
         public bool IsActive { get; set; }
-        public int SiteId { get; set; }
+        public Nullable<int> Status { get; set; }
     
+        public virtual Chrom_DataVault Chrom_DataVault { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Chrom_DataVault> Chrom_DataVault { get; set; }
+        public virtual ICollection<Chrom_Sequence_Instrument> Chrom_Sequence_Instrument { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Chrom_Sequence_Trails> Chrom_Sequence_Trails { get; set; }
         public virtual User User { get; set; }
     }
 }

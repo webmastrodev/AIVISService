@@ -17,7 +17,7 @@ using ConsoleService.Core.Dtos;
 using ConsoleService.Core;
 using Thermo.Chromeleon.Sdk.Interfaces.Types;
 using System.Management;
-
+using Thermo.Chromeleon.Sdk.Interfaces.Types.Collections;
 
 namespace ConsoleService
 {
@@ -116,15 +116,13 @@ namespace ConsoleService
 
                 foreach (var folder in Folders)
                 {
-                    Console.WriteLine(folder.Name);
-
                     if (folder.Name != "$RecycleBin$")
                     {
                         foreach (var item in folder.ItemAuditTrail)
                         {
                             if (item.Operation.ToString() == "Moved" && item.ItemType.Name == "ISequence")
                             {
-                                Console.WriteLine("Inside Deleted Folder");
+                                //Console.WriteLine("Inside Deleted Folder");
 
                                 var TestItem = item.RelativePath;
                                 //var TestSeq = item.RelativePath as ISequence;
@@ -158,7 +156,7 @@ namespace ConsoleService
                     {
                         var parentChildItem = child as IParentItem;
 
-                        if (parentChildItem is ISequence) // && child.Name == "QC330OMEP_ASRS_3007A - Copy"
+                        if (parentChildItem is ISequence && child.Name == "QC046CARV_DS_1406A") // && child.Name == "QC046CARV_DS_1406A"
                         {
 
                             //Uncomment this
@@ -194,23 +192,25 @@ namespace ConsoleService
                                     // Deleted Injection
                                     ManageTrails(SequenceId, atril.Number, atril.Description, "DeletedInjection", SeqBatchNo, SeqProductName, SeqTestName, atril.TransactionLogEntry.StartTime.LocalDateTime, ARNo, InstrumentId, atril.TransactionLogEntry.User.Name);
                                 }
-                                else if (atril.Operation.ToString() == "Changed" && atril.ItemType.Name == "IProcessingMethod")
-                                {
-                                    var Injections = (parentChildItem as ISequence).Injections;
 
-                                    if (Injections.Any())
-                                    {
-                                        IProcessingMethod processingMethod = Injections[0].ProcessingMethod;
-                                        foreach (var component in processingMethod.Components)
-                                        {
-                                            if (component.CustomFields.Where(w => w.Definition.Name.StartsWith("STD") && w.Definition.Name.EndsWith("WT")).Count() > 0)
-                                            {
-                                                ManageTrails(SequenceId, atril.Number, atril.Description, "Changed", SeqBatchNo, SeqProductName, SeqTestName, atril.TransactionLogEntry.StartTime.LocalDateTime, ARNo, InstrumentId, atril.TransactionLogEntry.User.Name);
-                                            }
-                                        }
+                                //else if (atril.Operation.ToString() == "Changed" && atril.ItemType.Name == "IProcessingMethod")
+                                //{
+                                //    //Changed
+                                //    var Injections = (parentChildItem as ISequence).Injections;
 
-                                    }
-                                }
+                                //    if (Injections.Any())
+                                //    {
+                                //        IProcessingMethod processingMethod = Injections[0].ProcessingMethod;
+                                //        foreach (var component in processingMethod.Components)
+                                //        {
+                                //            if (component.CustomFields.Where(w => w.Definition.Name.StartsWith("STD") && w.Definition.Name.EndsWith("WT")).Count() > 0)
+                                //            {
+                                //                ManageTrails(SequenceId, atril.Number, atril.Description, "Changed", SeqBatchNo, SeqProductName, SeqTestName, atril.TransactionLogEntry.StartTime.LocalDateTime, ARNo, InstrumentId, atril.TransactionLogEntry.User.Name);
+                                //            }
+                                //        }
+
+                                //    }
+                                //}
 
 
 
@@ -237,11 +237,12 @@ namespace ConsoleService
                             }
 
 
-                            var LastFinishRunTrail = parentChildItem.ItemAuditTrail.Where(w => w.Operation.ToString() == "FinishedRun").OrderByDescending(o => o.Number).FirstOrDefault();
+                            var LastFinishRunTrail = parentChildItem.ItemAuditTrail.Where(w => w.Operation.ToString() == "FinishedRun").OrderByDescending(o => o.TransactionLogEntry.StartTime.LocalDateTime).FirstOrDefault();
                             if (LastFinishRunTrail != null)
                             {
                                 //Check Change Injection
-                                var ChangedInjectionsTrails = parentChildItem.ItemAuditTrail.Where(w => w.Operation.ToString() == "Changed" && w.ItemType.Name == "ISequence" && w.Number > LastFinishRunTrail.Number).ToList();
+                                //var ChangedInjectionsTrails = parentChildItem.ItemAuditTrail.Where(w => w.Operation.ToString() == "Changed" && w.ItemType.Name == "ISequence" && w.TransactionLogEntry.StartTime.LocalDateTime > LastFinishRunTrail.TransactionLogEntry.StartTime.LocalDateTime).ToList();
+                                var ChangedInjectionsTrails = parentChildItem.ItemAuditTrail.Where(w => w.Operation.ToString() == "Changed" && w.ItemType.Name == "ISequence").ToList();
                                 if (ChangedInjectionsTrails.Any())
                                 {
                                     foreach (var chTrail in ChangedInjectionsTrails)
@@ -251,7 +252,7 @@ namespace ConsoleService
                                     }
                                 }
 
-                                var RenamedInjectionsTrails = parentChildItem.ItemAuditTrail.Where(w => w.Operation.ToString().ToLower().Contains("ren") && w.ItemType.Name == "ISequence" && w.Number > LastFinishRunTrail.Number).ToList();
+                                var RenamedInjectionsTrails = parentChildItem.ItemAuditTrail.Where(w => w.Operation.ToString().ToLower().Contains("ren") && w.ItemType.Name == "ISequence" && w.TransactionLogEntry.StartTime.LocalDateTime > LastFinishRunTrail.TransactionLogEntry.StartTime.LocalDateTime).ToList();
                                 if (RenamedInjectionsTrails.Any())
                                 {
                                     foreach (var renTrail in RenamedInjectionsTrails)
@@ -260,6 +261,35 @@ namespace ConsoleService
                                         ManageTrails(SequenceId, renTrail.Number, renTrail.Description, "RenamedInjection", SeqBatchNo, SeqProductName, SeqTestName, renTrail.TransactionLogEntry.StartTime.LocalDateTime, ARNo, InstrumentId, renTrail.TransactionLogEntry.User.Name);
                                     }
                                 }
+
+                                //Changed Exception
+
+                                var Injections = (parentChildItem as ISequence).Injections;
+
+                                var ChangedTrails = parentChildItem.ItemAuditTrail.Where(w => w.Operation.ToString() == "Changed" && w.ItemType.Name == "IProcessingMethod" && w.TransactionLogEntry.StartTime.LocalDateTime > LastFinishRunTrail.TransactionLogEntry.StartTime.LocalDateTime).ToList();
+                                if (ChangedTrails.Any() && Injections.Any())
+                                {
+                                    foreach (var chTrail in ChangedTrails)
+                                    {
+                                        IProcessingMethod processingMethod = Injections[0].ProcessingMethod;
+
+                                        foreach (var component in processingMethod.Components)
+                                        {
+                                            if (component.CustomFields.Where(w => w.Definition.Name.StartsWith("STD_") && w.Definition.Name.EndsWith("_WT")).Count() > 0)
+                                            {
+                                                ManageTrails(SequenceId, chTrail.Number, chTrail.Description, "Changed", SeqBatchNo, SeqProductName, SeqTestName, chTrail.TransactionLogEntry.StartTime.LocalDateTime, ARNo, InstrumentId, chTrail.TransactionLogEntry.User.Name);
+                                            }
+                                        }
+
+
+
+                                        //foreach (var def in processingMethod.Components.ConcentrationLevelDefinitions)
+                                        //{
+                                        //    Console.WriteLine(def.Description + "-" + def.Name);
+                                        //}
+                                    }
+                                }
+
                             }
 
 
@@ -387,6 +417,14 @@ namespace ConsoleService
             BatchNo = null;
             TestName = null;
             ARNo = null;
+
+            if (Seq.CustomFields.Any())
+            {
+                foreach (var field in Seq.CustomFields)
+                {
+                    Console.WriteLine(field.Definition);
+                }
+            }
 
             InstrumentId = Seq.Instrument;
 

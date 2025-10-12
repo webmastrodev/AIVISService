@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ConsoleService.Model
+namespace AivisService.Model
 {
     using System;
     using System.Collections.Generic;
@@ -21,12 +21,12 @@ namespace ConsoleService.Model
         }
     
         public int Id { get; set; }
+        public int SiteId { get; set; }
         public string ServerName { get; set; }
         public string ServerUri { get; set; }
         public int ImportedBy { get; set; }
         public System.DateTime ImportedOn { get; set; }
         public bool IsActive { get; set; }
-        public int SiteId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chrom_DataVault> Chrom_DataVault { get; set; }

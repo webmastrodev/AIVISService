@@ -109,6 +109,9 @@
     <Compile Include="Model\Users_Credentials.cs">
       <DependentUpon>AIVISEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\User_Sites.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

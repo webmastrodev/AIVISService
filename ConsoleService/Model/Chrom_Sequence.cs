@@ -29,7 +29,7 @@ namespace ConsoleService.Model
         public System.DateTime ImportedOn { get; set; }
         public bool IsActive { get; set; }
         public Nullable<int> Status { get; set; }
-        public Nullable<int> SiteId { get; set; }
+        public int SiteId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chrom_Sequence_Instrument> Chrom_Sequence_Instrument { get; set; }

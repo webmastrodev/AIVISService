@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -33,10 +33,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +54,8 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
+    <Reference Include="Thermo.Chromeleon.Sdk, Version=7.2.0.3603, Culture=neutral, PublicKeyToken=f1413f165c7768f2, processorArchitecture=MSIL" />
+    <Reference Include="Thermo.Chromeleon.Sdk.Addins, Version=7.2.0.3603, Culture=neutral, PublicKeyToken=f1413f165c7768f2, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AivisService.cs">
@@ -51,6 +63,61 @@
     </Compile>
     <Compile Include="AivisService.Designer.cs">
       <DependentUpon>AivisService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Constants.cs" />
+    <Compile Include="Core\Dtos\SequenceDetails.cs" />
+    <Compile Include="Core\Dtos\TrailDetails.cs" />
+    <Compile Include="DatabaseService.cs" />
+    <Compile Include="Model\AIVISEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AIVISEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AIVISEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AIVISEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AIVISEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Chrom_DataVault.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Chrom_Intervention_Type.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Chrom_Sequence.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Chrom_Sequence_Instrument.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Chrom_Sequence_Trails.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Chrom_Server.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Role.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Site.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SiteClient.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\User.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Users_Credentials.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\User_Sites.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -63,6 +130,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="Model\AIVISEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AIVISEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Model\AIVISEntities.edmx.diagram">
+      <DependentUpon>AIVISEntities.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AivisService.resx">
@@ -72,5 +147,21 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\AIVISEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AIVISEntities.Context.cs</LastGenOutput>
+      <DependentUpon>AIVISEntities.edmx</DependentUpon>
+    </Content>
+    <Content Include="Model\AIVISEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AIVISEntities.edmx</DependentUpon>
+      <LastGenOutput>AIVISEntities.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

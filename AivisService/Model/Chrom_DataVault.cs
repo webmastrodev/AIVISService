@@ -7,29 +7,32 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ConsoleService.Model
+namespace AivisService.Model
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Chrom_Server
+    public partial class Chrom_DataVault
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Chrom_Server()
+        public Chrom_DataVault()
         {
-            this.Chrom_DataVault = new HashSet<Chrom_DataVault>();
+            this.Chrom_Sequence = new HashSet<Chrom_Sequence>();
         }
     
         public int Id { get; set; }
-        public string ServerName { get; set; }
-        public string ServerUri { get; set; }
+        public int SiteId { get; set; }
+        public int ServerId { get; set; }
+        public string DataVault { get; set; }
+        public string DataVaultUri { get; set; }
         public int ImportedBy { get; set; }
         public System.DateTime ImportedOn { get; set; }
         public bool IsActive { get; set; }
-        public int SiteId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Chrom_DataVault> Chrom_DataVault { get; set; }
+        public virtual Chrom_Server Chrom_Server { get; set; }
+        public virtual Site Site { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Chrom_Sequence> Chrom_Sequence { get; set; }
     }
 }

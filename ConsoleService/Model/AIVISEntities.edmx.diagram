@@ -31,6 +31,10 @@
         <AssociationConnector Association="AIVISModel.FK_Chrom_DataVault_Users" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Sequence_Chrom_DataVault" />
         <AssociationConnector Association="AIVISModel.FK_Chrom_Server_Users" />
+        <EntityTypeShape EntityType="AIVISModel.User_Sites" Width="1.5" PointX="5.25" PointY="2.125" />
+        <AssociationConnector Association="AIVISModel.FK_Chrom_DataVault_Sites" />
+        <AssociationConnector Association="AIVISModel.FK_User_Sites_Sites" />
+        <AssociationConnector Association="AIVISModel.FK_User_Sites_Users" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

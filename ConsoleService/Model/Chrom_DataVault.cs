@@ -27,11 +27,12 @@ namespace ConsoleService.Model
         public int ImportedBy { get; set; }
         public System.DateTime ImportedOn { get; set; }
         public bool IsActive { get; set; }
-        public Nullable<int> SiteId { get; set; }
+        public int SiteId { get; set; }
     
         public virtual Chrom_Server Chrom_Server { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chrom_Sequence> Chrom_Sequence { get; set; }
+        public virtual Site Site { get; set; }
     }
 }

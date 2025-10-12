@@ -7,29 +7,32 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ConsoleService.Model
+namespace AivisService.Model
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Chrom_Server
+    public partial class Site
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Chrom_Server()
+        public Site()
         {
             this.Chrom_DataVault = new HashSet<Chrom_DataVault>();
+            this.SiteClients = new HashSet<SiteClient>();
+            this.User_Sites = new HashSet<User_Sites>();
         }
     
         public int Id { get; set; }
-        public string ServerName { get; set; }
-        public string ServerUri { get; set; }
-        public int ImportedBy { get; set; }
-        public System.DateTime ImportedOn { get; set; }
+        public string SiteName { get; set; }
+        public string SiteCode { get; set; }
+        public int MaxClientAllowed { get; set; }
         public bool IsActive { get; set; }
-        public int SiteId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chrom_DataVault> Chrom_DataVault { get; set; }
-        public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SiteClient> SiteClients { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User_Sites> User_Sites { get; set; }
     }
 }

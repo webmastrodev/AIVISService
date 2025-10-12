@@ -18,6 +18,8 @@ namespace ConsoleService.Model
         public Site()
         {
             this.SiteClients = new HashSet<SiteClient>();
+            this.Chrom_DataVault = new HashSet<Chrom_DataVault>();
+            this.User_Sites = new HashSet<User_Sites>();
         }
     
         public int Id { get; set; }
@@ -28,5 +30,9 @@ namespace ConsoleService.Model
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SiteClient> SiteClients { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Chrom_DataVault> Chrom_DataVault { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User_Sites> User_Sites { get; set; }
     }
 }

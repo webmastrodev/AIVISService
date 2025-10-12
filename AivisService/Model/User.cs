@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ConsoleService.Model
+namespace AivisService.Model
 {
     using System;
     using System.Collections.Generic;
@@ -17,15 +17,15 @@ namespace ConsoleService.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.Chrom_Sequence_Instrument = new HashSet<Chrom_Sequence_Instrument>();
-            this.Users_Credentials = new HashSet<Users_Credentials>();
+            this.Chrom_DataVault = new HashSet<Chrom_DataVault>();
             this.Chrom_Sequence = new HashSet<Chrom_Sequence>();
+            this.Chrom_Sequence_Instrument = new HashSet<Chrom_Sequence_Instrument>();
             this.Chrom_Sequence_Trails = new HashSet<Chrom_Sequence_Trails>();
             this.Chrom_Sequence_Trails1 = new HashSet<Chrom_Sequence_Trails>();
             this.Chrom_Sequence_Trails2 = new HashSet<Chrom_Sequence_Trails>();
-            this.Chrom_DataVault = new HashSet<Chrom_DataVault>();
             this.Chrom_Server = new HashSet<Chrom_Server>();
             this.User_Sites = new HashSet<User_Sites>();
+            this.Users_Credentials = new HashSet<Users_Credentials>();
         }
     
         public int Id { get; set; }
@@ -42,12 +42,11 @@ namespace ConsoleService.Model
         public Nullable<System.DateTime> ModifiedOn { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Chrom_Sequence_Instrument> Chrom_Sequence_Instrument { get; set; }
-        public virtual Role Role { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Users_Credentials> Users_Credentials { get; set; }
+        public virtual ICollection<Chrom_DataVault> Chrom_DataVault { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chrom_Sequence> Chrom_Sequence { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Chrom_Sequence_Instrument> Chrom_Sequence_Instrument { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chrom_Sequence_Trails> Chrom_Sequence_Trails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -55,10 +54,11 @@ namespace ConsoleService.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chrom_Sequence_Trails> Chrom_Sequence_Trails2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Chrom_DataVault> Chrom_DataVault { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chrom_Server> Chrom_Server { get; set; }
+        public virtual Role Role { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User_Sites> User_Sites { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Users_Credentials> Users_Credentials { get; set; }
     }
 }
