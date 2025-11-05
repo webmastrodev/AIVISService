@@ -25,7 +25,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -53,7 +53,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Thermo.Chromeleon.Sdk, Version=7.2.0.3603, Culture=neutral, PublicKeyToken=f1413f165c7768f2, processorArchitecture=MSIL" />
+    <Reference Include="Thermo.Chromeleon.Sdk, Version=7.3.1.6535, Culture=neutral, PublicKeyToken=f1413f165c7768f2, processorArchitecture=MSIL" />
+    <Reference Include="Thermo.Chromeleon.Sdk.Addins, Version=7.3.1.6535, Culture=neutral, PublicKeyToken=f1413f165c7768f2, processorArchitecture=MSIL" />
+    <Reference Include="Thermo.Chromeleon.SdkControls, Version=7.3.1.6535, Culture=neutral, PublicKeyToken=f1413f165c7768f2, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChromeleonService.cs" />
@@ -79,7 +81,13 @@
     <Compile Include="Model\Chrom_DataVault.cs">
       <DependentUpon>AIVISEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Chrom_InstrumentMethod.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Chrom_Intervention_Type.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Chrom_ProcessingMethod.cs">
       <DependentUpon>AIVISEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Chrom_Sequence.cs">
@@ -94,7 +102,22 @@
     <Compile Include="Model\Chrom_Server.cs">
       <DependentUpon>AIVISEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\MasterSequence.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\MasterSequence_Injections.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Role.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Sequence.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Sequence_Details.cs">
+      <DependentUpon>AIVISEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Sequence_Status.cs">
       <DependentUpon>AIVISEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Site.cs">

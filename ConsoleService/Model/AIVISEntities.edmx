@@ -18,6 +18,19 @@
           <Property Name="ImportedOn" Type="datetime" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Chrom_InstrumentMethod">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiteId" Type="int" Nullable="false" />
+          <Property Name="DataVaultId" Type="int" Nullable="false" />
+          <Property Name="Chromeleon_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="URL" Type="nvarchar" MaxLength="2350" Nullable="false" />
+          <Property Name="AddedBy" Type="int" Nullable="false" />
+          <Property Name="AddedOn" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Chrom_Intervention_Type">
           <Key>
             <PropertyRef Name="Id" />
@@ -29,6 +42,19 @@
           <Property Name="isActive" Type="bit" />
           <Property Name="ChartColorCode" Type="nvarchar" MaxLength="50" />
           <Property Name="DisplayName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Chrom_ProcessingMethod">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiteId" Type="int" Nullable="false" />
+          <Property Name="DataVaultId" Type="int" Nullable="false" />
+          <Property Name="Chromeleon_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="URL" Type="nvarchar" MaxLength="2350" Nullable="false" />
+          <Property Name="AddedBy" Type="int" Nullable="false" />
+          <Property Name="AddedOn" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Chrom_Sequence">
           <Key>
@@ -95,6 +121,34 @@
           <Property Name="ImportedOn" Type="datetime" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="MasterSequence">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiteId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="SampleType" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="InstrumentMethodId" Type="int" />
+          <Property Name="ProcessingMethodID" Type="int" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+          <Property Name="AddedBy" Type="int" Nullable="false" />
+          <Property Name="AddedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="MasterSequence_Injections">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MasterSequenceId" Type="int" Nullable="false" />
+          <Property Name="InjectionName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="InjectionCount" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="150" />
+        </EntityType>
         <EntityType Name="Roles">
           <Key>
             <PropertyRef Name="Id" />
@@ -110,6 +164,46 @@
           <Property Name="AddedOn" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Sequence">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SequenceName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="BatchNo" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ARNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TestName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="NoOfTest" Type="int" Nullable="false" />
+          <Property Name="ProductCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProcessingStatus" Type="int" Nullable="false" />
+          <Property Name="AddedBy" Type="int" Nullable="false" />
+          <Property Name="AddedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Sequence_Details">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SequenceId" Type="bigint" Nullable="false" />
+          <Property Name="Weight_Sample" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Avg_Sample" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Label_Claim" Type="varchar" MaxLength="50" />
+          <Property Name="Stage" Type="varchar" MaxLength="50" />
+          <Property Name="Pack" Type="varchar" MaxLength="50" />
+          <Property Name="Condition" Type="varchar" MaxLength="70" />
+          <Property Name="TimeInterval_Dissolution" Type="varchar" MaxLength="50" />
+          <Property Name="SampleWithdraw_Dissolution" Type="varchar" MaxLength="50" />
+          <Property Name="TotalVolume_Dissolution" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Sequence_Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SeqStatus" Type="varchar" MaxLength="70" Nullable="false" />
         </EntityType>
         <EntityType Name="SiteClients">
           <Key>
@@ -199,6 +293,78 @@
             </Principal>
             <Dependent Role="Chrom_DataVault">
               <PropertyRef Name="ImportedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_InstrumentMethod_Chrom_DataVault">
+          <End Role="Chrom_DataVault" Type="Self.Chrom_DataVault" Multiplicity="1" />
+          <End Role="Chrom_InstrumentMethod" Type="Self.Chrom_InstrumentMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chrom_DataVault">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_InstrumentMethod">
+              <PropertyRef Name="DataVaultId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_InstrumentMethod_Sites">
+          <End Role="Sites" Type="Self.Sites" Multiplicity="1" />
+          <End Role="Chrom_InstrumentMethod" Type="Self.Chrom_InstrumentMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sites">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_InstrumentMethod">
+              <PropertyRef Name="SiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_InstrumentMethod_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Chrom_InstrumentMethod" Type="Self.Chrom_InstrumentMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_InstrumentMethod">
+              <PropertyRef Name="AddedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_ProcessingMethod_Chrom_DataVault">
+          <End Role="Chrom_DataVault" Type="Self.Chrom_DataVault" Multiplicity="1" />
+          <End Role="Chrom_ProcessingMethod" Type="Self.Chrom_ProcessingMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chrom_DataVault">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_ProcessingMethod">
+              <PropertyRef Name="DataVaultId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_ProcessingMethod_Sites">
+          <End Role="Sites" Type="Self.Sites" Multiplicity="1" />
+          <End Role="Chrom_ProcessingMethod" Type="Self.Chrom_ProcessingMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sites">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_ProcessingMethod">
+              <PropertyRef Name="SiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_ProcessingMethod_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Chrom_ProcessingMethod" Type="Self.Chrom_ProcessingMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_ProcessingMethod">
+              <PropertyRef Name="AddedBy" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -322,6 +488,114 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MasterSequence_Chrom_InstrumentMethod">
+          <End Role="Chrom_InstrumentMethod" Type="Self.Chrom_InstrumentMethod" Multiplicity="0..1" />
+          <End Role="MasterSequence" Type="Self.MasterSequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chrom_InstrumentMethod">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MasterSequence">
+              <PropertyRef Name="InstrumentMethodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MasterSequence_Chrom_ProcessingMethod">
+          <End Role="Chrom_ProcessingMethod" Type="Self.Chrom_ProcessingMethod" Multiplicity="0..1" />
+          <End Role="MasterSequence" Type="Self.MasterSequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chrom_ProcessingMethod">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MasterSequence">
+              <PropertyRef Name="ProcessingMethodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MasterSequence_Injections_MaserSequence">
+          <End Role="MasterSequence" Type="Self.MasterSequence" Multiplicity="1" />
+          <End Role="MasterSequence_Injections" Type="Self.MasterSequence_Injections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MasterSequence">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MasterSequence_Injections">
+              <PropertyRef Name="MasterSequenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MasterSequence_Sites">
+          <End Role="Sites" Type="Self.Sites" Multiplicity="1" />
+          <End Role="MasterSequence" Type="Self.MasterSequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sites">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MasterSequence">
+              <PropertyRef Name="SiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MasterSequence_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="MasterSequence" Type="Self.MasterSequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MasterSequence">
+              <PropertyRef Name="AddedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MasterSequence_Users1">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="MasterSequence" Type="Self.MasterSequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MasterSequence">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sequence_Details_Sequence">
+          <End Role="Sequence" Type="Self.Sequence" Multiplicity="1" />
+          <End Role="Sequence_Details" Type="Self.Sequence_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sequence">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sequence_Details">
+              <PropertyRef Name="SequenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sequence_Sequence_Status">
+          <End Role="Sequence_Status" Type="Self.Sequence_Status" Multiplicity="1" />
+          <End Role="Sequence" Type="Self.Sequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sequence_Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sequence">
+              <PropertyRef Name="ProcessingStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sequence_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Sequence" Type="Self.Sequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sequence">
+              <PropertyRef Name="AddedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SiteClients_Sites">
           <End Role="Sites" Type="Self.Sites" Multiplicity="1" />
           <End Role="SiteClients" Type="Self.SiteClients" Multiplicity="*" />
@@ -384,12 +658,19 @@
         </Association>
         <EntityContainer Name="AIVISModelStoreContainer">
           <EntitySet Name="Chrom_DataVault" EntityType="Self.Chrom_DataVault" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Chrom_InstrumentMethod" EntityType="Self.Chrom_InstrumentMethod" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Chrom_Intervention_Type" EntityType="Self.Chrom_Intervention_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Chrom_ProcessingMethod" EntityType="Self.Chrom_ProcessingMethod" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Chrom_Sequence" EntityType="Self.Chrom_Sequence" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Chrom_Sequence_Instrument" EntityType="Self.Chrom_Sequence_Instrument" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Chrom_Sequence_Trails" EntityType="Self.Chrom_Sequence_Trails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Chrom_Server" EntityType="Self.Chrom_Server" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MasterSequence" EntityType="Self.MasterSequence" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MasterSequence_Injections" EntityType="Self.MasterSequence_Injections" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sequence" EntityType="Self.Sequence" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sequence_Details" EntityType="Self.Sequence_Details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sequence_Status" EntityType="Self.Sequence_Status" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiteClients" EntityType="Self.SiteClients" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sites" EntityType="Self.Sites" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Sites" EntityType="Self.User_Sites" Schema="dbo" store:Type="Tables" />
@@ -406,6 +687,30 @@
           <AssociationSet Name="FK_Chrom_DataVault_Users" Association="Self.FK_Chrom_DataVault_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Chrom_DataVault" EntitySet="Chrom_DataVault" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_InstrumentMethod_Chrom_DataVault" Association="Self.FK_Chrom_InstrumentMethod_Chrom_DataVault">
+            <End Role="Chrom_DataVault" EntitySet="Chrom_DataVault" />
+            <End Role="Chrom_InstrumentMethod" EntitySet="Chrom_InstrumentMethod" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_InstrumentMethod_Sites" Association="Self.FK_Chrom_InstrumentMethod_Sites">
+            <End Role="Sites" EntitySet="Sites" />
+            <End Role="Chrom_InstrumentMethod" EntitySet="Chrom_InstrumentMethod" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_InstrumentMethod_Users" Association="Self.FK_Chrom_InstrumentMethod_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Chrom_InstrumentMethod" EntitySet="Chrom_InstrumentMethod" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_ProcessingMethod_Chrom_DataVault" Association="Self.FK_Chrom_ProcessingMethod_Chrom_DataVault">
+            <End Role="Chrom_DataVault" EntitySet="Chrom_DataVault" />
+            <End Role="Chrom_ProcessingMethod" EntitySet="Chrom_ProcessingMethod" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_ProcessingMethod_Sites" Association="Self.FK_Chrom_ProcessingMethod_Sites">
+            <End Role="Sites" EntitySet="Sites" />
+            <End Role="Chrom_ProcessingMethod" EntitySet="Chrom_ProcessingMethod" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_ProcessingMethod_Users" Association="Self.FK_Chrom_ProcessingMethod_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Chrom_ProcessingMethod" EntitySet="Chrom_ProcessingMethod" />
           </AssociationSet>
           <AssociationSet Name="FK_Chrom_Sequence_Chrom_DataVault" Association="Self.FK_Chrom_Sequence_Chrom_DataVault">
             <End Role="Chrom_DataVault" EntitySet="Chrom_DataVault" />
@@ -446,6 +751,42 @@
           <AssociationSet Name="FK_Chrom_Server_Users" Association="Self.FK_Chrom_Server_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Chrom_Server" EntitySet="Chrom_Server" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MasterSequence_Chrom_InstrumentMethod" Association="Self.FK_MasterSequence_Chrom_InstrumentMethod">
+            <End Role="Chrom_InstrumentMethod" EntitySet="Chrom_InstrumentMethod" />
+            <End Role="MasterSequence" EntitySet="MasterSequence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MasterSequence_Chrom_ProcessingMethod" Association="Self.FK_MasterSequence_Chrom_ProcessingMethod">
+            <End Role="Chrom_ProcessingMethod" EntitySet="Chrom_ProcessingMethod" />
+            <End Role="MasterSequence" EntitySet="MasterSequence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MasterSequence_Injections_MaserSequence" Association="Self.FK_MasterSequence_Injections_MaserSequence">
+            <End Role="MasterSequence" EntitySet="MasterSequence" />
+            <End Role="MasterSequence_Injections" EntitySet="MasterSequence_Injections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MasterSequence_Sites" Association="Self.FK_MasterSequence_Sites">
+            <End Role="Sites" EntitySet="Sites" />
+            <End Role="MasterSequence" EntitySet="MasterSequence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MasterSequence_Users" Association="Self.FK_MasterSequence_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="MasterSequence" EntitySet="MasterSequence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MasterSequence_Users1" Association="Self.FK_MasterSequence_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="MasterSequence" EntitySet="MasterSequence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sequence_Details_Sequence" Association="Self.FK_Sequence_Details_Sequence">
+            <End Role="Sequence" EntitySet="Sequence" />
+            <End Role="Sequence_Details" EntitySet="Sequence_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sequence_Sequence_Status" Association="Self.FK_Sequence_Sequence_Status">
+            <End Role="Sequence_Status" EntitySet="Sequence_Status" />
+            <End Role="Sequence" EntitySet="Sequence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sequence_Users" Association="Self.FK_Sequence_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Sequence" EntitySet="Sequence" />
           </AssociationSet>
           <AssociationSet Name="FK_SiteClients_Sites" Association="Self.FK_SiteClients_Sites">
             <End Role="Sites" EntitySet="Sites" />
@@ -540,6 +881,11 @@
           <NavigationProperty Name="Chrom_DataVault" Relationship="AIVISModel.FK_Chrom_DataVault_Users" FromRole="User" ToRole="Chrom_DataVault" />
           <NavigationProperty Name="Chrom_Server" Relationship="AIVISModel.FK_Chrom_Server_Users" FromRole="User" ToRole="Chrom_Server" />
           <NavigationProperty Name="User_Sites" Relationship="AIVISModel.FK_User_Sites_Users" FromRole="User" ToRole="User_Sites" />
+          <NavigationProperty Name="MasterSequences" Relationship="AIVISModel.FK_MasterSequence_Users" FromRole="User" ToRole="MasterSequence" />
+          <NavigationProperty Name="MasterSequences1" Relationship="AIVISModel.FK_MasterSequence_Users1" FromRole="User" ToRole="MasterSequence" />
+          <NavigationProperty Name="Sequences" Relationship="AIVISModel.FK_Sequence_Users" FromRole="User" ToRole="Sequence" />
+          <NavigationProperty Name="Chrom_InstrumentMethod" Relationship="AIVISModel.FK_Chrom_InstrumentMethod_Users" FromRole="User" ToRole="Chrom_InstrumentMethod" />
+          <NavigationProperty Name="Chrom_ProcessingMethod" Relationship="AIVISModel.FK_Chrom_ProcessingMethod_Users" FromRole="User" ToRole="Chrom_ProcessingMethod" />
           </EntityType>
         <EntityType Name="Users_Credentials">
           <Key>
@@ -674,6 +1020,73 @@
             <End Role="User" EntitySet="Users" />
             <End Role="User_Sites" EntitySet="User_Sites" />
           </AssociationSet>
+          <EntitySet Name="MasterSequences" EntityType="AIVISModel.MasterSequence" />
+          <EntitySet Name="MasterSequence_Injections" EntityType="AIVISModel.MasterSequence_Injections" />
+          <EntitySet Name="Sequences" EntityType="AIVISModel.Sequence" />
+          <EntitySet Name="Sequence_Details" EntityType="AIVISModel.Sequence_Details" />
+          <EntitySet Name="Sequence_Status" EntityType="AIVISModel.Sequence_Status" />
+          <AssociationSet Name="FK_MasterSequence_Injections_MaserSequence" Association="AIVISModel.FK_MasterSequence_Injections_MaserSequence">
+            <End Role="MasterSequence" EntitySet="MasterSequences" />
+            <End Role="MasterSequence_Injections" EntitySet="MasterSequence_Injections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MasterSequence_Sites" Association="AIVISModel.FK_MasterSequence_Sites">
+            <End Role="Site" EntitySet="Sites" />
+            <End Role="MasterSequence" EntitySet="MasterSequences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MasterSequence_Users" Association="AIVISModel.FK_MasterSequence_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="MasterSequence" EntitySet="MasterSequences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MasterSequence_Users1" Association="AIVISModel.FK_MasterSequence_Users1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="MasterSequence" EntitySet="MasterSequences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sequence_Details_Sequence" Association="AIVISModel.FK_Sequence_Details_Sequence">
+            <End Role="Sequence" EntitySet="Sequences" />
+            <End Role="Sequence_Details" EntitySet="Sequence_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sequence_Sequence_Status" Association="AIVISModel.FK_Sequence_Sequence_Status">
+            <End Role="Sequence_Status" EntitySet="Sequence_Status" />
+            <End Role="Sequence" EntitySet="Sequences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sequence_Users" Association="AIVISModel.FK_Sequence_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Sequence" EntitySet="Sequences" />
+          </AssociationSet>
+          <EntitySet Name="Chrom_InstrumentMethod" EntityType="AIVISModel.Chrom_InstrumentMethod" />
+          <EntitySet Name="Chrom_ProcessingMethod" EntityType="AIVISModel.Chrom_ProcessingMethod" />
+          <AssociationSet Name="FK_Chrom_InstrumentMethod_Chrom_DataVault" Association="AIVISModel.FK_Chrom_InstrumentMethod_Chrom_DataVault">
+            <End Role="Chrom_DataVault" EntitySet="Chrom_DataVault" />
+            <End Role="Chrom_InstrumentMethod" EntitySet="Chrom_InstrumentMethod" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_ProcessingMethod_Chrom_DataVault" Association="AIVISModel.FK_Chrom_ProcessingMethod_Chrom_DataVault">
+            <End Role="Chrom_DataVault" EntitySet="Chrom_DataVault" />
+            <End Role="Chrom_ProcessingMethod" EntitySet="Chrom_ProcessingMethod" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_InstrumentMethod_Sites" Association="AIVISModel.FK_Chrom_InstrumentMethod_Sites">
+            <End Role="Site" EntitySet="Sites" />
+            <End Role="Chrom_InstrumentMethod" EntitySet="Chrom_InstrumentMethod" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_InstrumentMethod_Users" Association="AIVISModel.FK_Chrom_InstrumentMethod_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Chrom_InstrumentMethod" EntitySet="Chrom_InstrumentMethod" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MasterSequence_Chrom_InstrumentMethod" Association="AIVISModel.FK_MasterSequence_Chrom_InstrumentMethod">
+            <End Role="Chrom_InstrumentMethod" EntitySet="Chrom_InstrumentMethod" />
+            <End Role="MasterSequence" EntitySet="MasterSequences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_ProcessingMethod_Sites" Association="AIVISModel.FK_Chrom_ProcessingMethod_Sites">
+            <End Role="Site" EntitySet="Sites" />
+            <End Role="Chrom_ProcessingMethod" EntitySet="Chrom_ProcessingMethod" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chrom_ProcessingMethod_Users" Association="AIVISModel.FK_Chrom_ProcessingMethod_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Chrom_ProcessingMethod" EntitySet="Chrom_ProcessingMethod" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MasterSequence_Chrom_ProcessingMethod" Association="AIVISModel.FK_MasterSequence_Chrom_ProcessingMethod">
+            <End Role="Chrom_ProcessingMethod" EntitySet="Chrom_ProcessingMethod" />
+            <End Role="MasterSequence" EntitySet="MasterSequences" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Chrom_Sequence">
           <Key>
@@ -738,6 +1151,9 @@
           <NavigationProperty Name="SiteClients" Relationship="AIVISModel.FK_SiteClients_Sites" FromRole="Site" ToRole="SiteClient" />
           <NavigationProperty Name="Chrom_DataVault" Relationship="AIVISModel.FK_Chrom_DataVault_Sites" FromRole="Site" ToRole="Chrom_DataVault" />
           <NavigationProperty Name="User_Sites" Relationship="AIVISModel.FK_User_Sites_Sites" FromRole="Site" ToRole="User_Sites" />
+          <NavigationProperty Name="MasterSequences" Relationship="AIVISModel.FK_MasterSequence_Sites" FromRole="Site" ToRole="MasterSequence" />
+          <NavigationProperty Name="Chrom_InstrumentMethod" Relationship="AIVISModel.FK_Chrom_InstrumentMethod_Sites" FromRole="Site" ToRole="Chrom_InstrumentMethod" />
+          <NavigationProperty Name="Chrom_ProcessingMethod" Relationship="AIVISModel.FK_Chrom_ProcessingMethod_Sites" FromRole="Site" ToRole="Chrom_ProcessingMethod" />
         </EntityType>
         <Association Name="FK_SiteClients_Sites">
           <End Type="AIVISModel.Site" Role="Site" Multiplicity="1" />
@@ -861,6 +1277,8 @@
           <NavigationProperty Name="User" Relationship="AIVISModel.FK_Chrom_DataVault_Users" FromRole="Chrom_DataVault" ToRole="User" />
           <NavigationProperty Name="Chrom_Sequence" Relationship="AIVISModel.FK_Chrom_Sequence_Chrom_DataVault" FromRole="Chrom_DataVault" ToRole="Chrom_Sequence" />
           <NavigationProperty Name="Site" Relationship="AIVISModel.FK_Chrom_DataVault_Sites" FromRole="Chrom_DataVault" ToRole="Site" />
+          <NavigationProperty Name="Chrom_InstrumentMethod" Relationship="AIVISModel.FK_Chrom_InstrumentMethod_Chrom_DataVault" FromRole="Chrom_DataVault" ToRole="Chrom_InstrumentMethod" />
+          <NavigationProperty Name="Chrom_ProcessingMethod" Relationship="AIVISModel.FK_Chrom_ProcessingMethod_Chrom_DataVault" FromRole="Chrom_DataVault" ToRole="Chrom_ProcessingMethod" />
         </EntityType>
         <EntityType Name="Chrom_Server">
           <Key>
@@ -968,6 +1386,300 @@
             </Principal>
             <Dependent Role="User_Sites">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MasterSequence">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="SampleType" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="InstrumentMethodId" Type="Int32" />
+          <Property Name="ProcessingMethodID" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+          <Property Name="AddedBy" Type="Int32" Nullable="false" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MasterSequence_Injections" Relationship="AIVISModel.FK_MasterSequence_Injections_MaserSequence" FromRole="MasterSequence" ToRole="MasterSequence_Injections" />
+          <NavigationProperty Name="Site" Relationship="AIVISModel.FK_MasterSequence_Sites" FromRole="MasterSequence" ToRole="Site" />
+          <NavigationProperty Name="User" Relationship="AIVISModel.FK_MasterSequence_Users" FromRole="MasterSequence" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="AIVISModel.FK_MasterSequence_Users1" FromRole="MasterSequence" ToRole="User" />
+          <NavigationProperty Name="Chrom_InstrumentMethod" Relationship="AIVISModel.FK_MasterSequence_Chrom_InstrumentMethod" FromRole="MasterSequence" ToRole="Chrom_InstrumentMethod" />
+          <NavigationProperty Name="Chrom_ProcessingMethod" Relationship="AIVISModel.FK_MasterSequence_Chrom_ProcessingMethod" FromRole="MasterSequence" ToRole="Chrom_ProcessingMethod" />
+        </EntityType>
+        <EntityType Name="MasterSequence_Injections">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MasterSequenceId" Type="Int32" Nullable="false" />
+          <Property Name="InjectionName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="InjectionCount" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MasterSequence" Relationship="AIVISModel.FK_MasterSequence_Injections_MaserSequence" FromRole="MasterSequence_Injections" ToRole="MasterSequence" />
+        </EntityType>
+        <EntityType Name="Sequence">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SequenceName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="BatchNo" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ARNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TestName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="NoOfTest" Type="Int32" Nullable="false" />
+          <Property Name="ProductCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessingStatus" Type="Int32" Nullable="false" />
+          <Property Name="AddedBy" Type="Int32" Nullable="false" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Sequence_Details" Relationship="AIVISModel.FK_Sequence_Details_Sequence" FromRole="Sequence" ToRole="Sequence_Details" />
+          <NavigationProperty Name="Sequence_Status" Relationship="AIVISModel.FK_Sequence_Sequence_Status" FromRole="Sequence" ToRole="Sequence_Status" />
+          <NavigationProperty Name="User" Relationship="AIVISModel.FK_Sequence_Users" FromRole="Sequence" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Sequence_Details">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SequenceId" Type="Int64" Nullable="false" />
+          <Property Name="Weight_Sample" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Avg_Sample" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Label_Claim" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Stage" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Pack" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Condition" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="TimeInterval_Dissolution" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SampleWithdraw_Dissolution" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TotalVolume_Dissolution" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Sequence" Relationship="AIVISModel.FK_Sequence_Details_Sequence" FromRole="Sequence_Details" ToRole="Sequence" />
+        </EntityType>
+        <EntityType Name="Sequence_Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SeqStatus" Type="String" Nullable="false" MaxLength="70" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Sequences" Relationship="AIVISModel.FK_Sequence_Sequence_Status" FromRole="Sequence_Status" ToRole="Sequence" />
+        </EntityType>
+        <Association Name="FK_MasterSequence_Injections_MaserSequence">
+          <End Type="AIVISModel.MasterSequence" Role="MasterSequence" Multiplicity="1" />
+          <End Type="AIVISModel.MasterSequence_Injections" Role="MasterSequence_Injections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MasterSequence">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MasterSequence_Injections">
+              <PropertyRef Name="MasterSequenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MasterSequence_Sites">
+          <End Type="AIVISModel.Site" Role="Site" Multiplicity="1" />
+          <End Type="AIVISModel.MasterSequence" Role="MasterSequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Site">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MasterSequence">
+              <PropertyRef Name="SiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MasterSequence_Users">
+          <End Type="AIVISModel.User" Role="User" Multiplicity="1" />
+          <End Type="AIVISModel.MasterSequence" Role="MasterSequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MasterSequence">
+              <PropertyRef Name="AddedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MasterSequence_Users1">
+          <End Type="AIVISModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="AIVISModel.MasterSequence" Role="MasterSequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MasterSequence">
+              <PropertyRef Name="ModifiedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sequence_Details_Sequence">
+          <End Type="AIVISModel.Sequence" Role="Sequence" Multiplicity="1" />
+          <End Type="AIVISModel.Sequence_Details" Role="Sequence_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sequence">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sequence_Details">
+              <PropertyRef Name="SequenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sequence_Sequence_Status">
+          <End Type="AIVISModel.Sequence_Status" Role="Sequence_Status" Multiplicity="1" />
+          <End Type="AIVISModel.Sequence" Role="Sequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sequence_Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sequence">
+              <PropertyRef Name="ProcessingStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sequence_Users">
+          <End Type="AIVISModel.User" Role="User" Multiplicity="1" />
+          <End Type="AIVISModel.Sequence" Role="Sequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sequence">
+              <PropertyRef Name="AddedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Chrom_InstrumentMethod">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
+          <Property Name="DataVaultId" Type="Int32" Nullable="false" />
+          <Property Name="Chromeleon_Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="URL" Type="String" Nullable="false" MaxLength="2350" FixedLength="false" Unicode="true" />
+          <Property Name="AddedBy" Type="Int32" Nullable="false" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Chrom_DataVault" Relationship="AIVISModel.FK_Chrom_InstrumentMethod_Chrom_DataVault" FromRole="Chrom_InstrumentMethod" ToRole="Chrom_DataVault" />
+          <NavigationProperty Name="Site" Relationship="AIVISModel.FK_Chrom_InstrumentMethod_Sites" FromRole="Chrom_InstrumentMethod" ToRole="Site" />
+          <NavigationProperty Name="User" Relationship="AIVISModel.FK_Chrom_InstrumentMethod_Users" FromRole="Chrom_InstrumentMethod" ToRole="User" />
+          <NavigationProperty Name="MasterSequences" Relationship="AIVISModel.FK_MasterSequence_Chrom_InstrumentMethod" FromRole="Chrom_InstrumentMethod" ToRole="MasterSequence" />
+        </EntityType>
+        <EntityType Name="Chrom_ProcessingMethod">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
+          <Property Name="DataVaultId" Type="Int32" Nullable="false" />
+          <Property Name="Chromeleon_Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="URL" Type="String" Nullable="false" MaxLength="2350" FixedLength="false" Unicode="true" />
+          <Property Name="AddedBy" Type="Int32" Nullable="false" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Chrom_DataVault" Relationship="AIVISModel.FK_Chrom_ProcessingMethod_Chrom_DataVault" FromRole="Chrom_ProcessingMethod" ToRole="Chrom_DataVault" />
+          <NavigationProperty Name="Site" Relationship="AIVISModel.FK_Chrom_ProcessingMethod_Sites" FromRole="Chrom_ProcessingMethod" ToRole="Site" />
+          <NavigationProperty Name="User" Relationship="AIVISModel.FK_Chrom_ProcessingMethod_Users" FromRole="Chrom_ProcessingMethod" ToRole="User" />
+          <NavigationProperty Name="MasterSequences" Relationship="AIVISModel.FK_MasterSequence_Chrom_ProcessingMethod" FromRole="Chrom_ProcessingMethod" ToRole="MasterSequence" />
+        </EntityType>
+        <Association Name="FK_Chrom_InstrumentMethod_Chrom_DataVault">
+          <End Type="AIVISModel.Chrom_DataVault" Role="Chrom_DataVault" Multiplicity="1" />
+          <End Type="AIVISModel.Chrom_InstrumentMethod" Role="Chrom_InstrumentMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chrom_DataVault">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_InstrumentMethod">
+              <PropertyRef Name="DataVaultId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_ProcessingMethod_Chrom_DataVault">
+          <End Type="AIVISModel.Chrom_DataVault" Role="Chrom_DataVault" Multiplicity="1" />
+          <End Type="AIVISModel.Chrom_ProcessingMethod" Role="Chrom_ProcessingMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chrom_DataVault">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_ProcessingMethod">
+              <PropertyRef Name="DataVaultId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_InstrumentMethod_Sites">
+          <End Type="AIVISModel.Site" Role="Site" Multiplicity="1" />
+          <End Type="AIVISModel.Chrom_InstrumentMethod" Role="Chrom_InstrumentMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Site">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_InstrumentMethod">
+              <PropertyRef Name="SiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_InstrumentMethod_Users">
+          <End Type="AIVISModel.User" Role="User" Multiplicity="1" />
+          <End Type="AIVISModel.Chrom_InstrumentMethod" Role="Chrom_InstrumentMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_InstrumentMethod">
+              <PropertyRef Name="AddedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MasterSequence_Chrom_InstrumentMethod">
+          <End Type="AIVISModel.Chrom_InstrumentMethod" Role="Chrom_InstrumentMethod" Multiplicity="0..1" />
+          <End Type="AIVISModel.MasterSequence" Role="MasterSequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chrom_InstrumentMethod">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MasterSequence">
+              <PropertyRef Name="InstrumentMethodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_ProcessingMethod_Sites">
+          <End Type="AIVISModel.Site" Role="Site" Multiplicity="1" />
+          <End Type="AIVISModel.Chrom_ProcessingMethod" Role="Chrom_ProcessingMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Site">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_ProcessingMethod">
+              <PropertyRef Name="SiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chrom_ProcessingMethod_Users">
+          <End Type="AIVISModel.User" Role="User" Multiplicity="1" />
+          <End Type="AIVISModel.Chrom_ProcessingMethod" Role="Chrom_ProcessingMethod" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chrom_ProcessingMethod">
+              <PropertyRef Name="AddedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MasterSequence_Chrom_ProcessingMethod">
+          <End Type="AIVISModel.Chrom_ProcessingMethod" Role="Chrom_ProcessingMethod" Multiplicity="0..1" />
+          <End Type="AIVISModel.MasterSequence" Role="MasterSequence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chrom_ProcessingMethod">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MasterSequence">
+              <PropertyRef Name="ProcessingMethodID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1146,6 +1858,107 @@
                 <ScalarProperty Name="IsDafault" ColumnName="IsDafault" />
                 <ScalarProperty Name="SiteId" ColumnName="SiteId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MasterSequences">
+            <EntityTypeMapping TypeName="AIVISModel.MasterSequence">
+              <MappingFragment StoreEntitySet="MasterSequence">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ProcessingMethodID" ColumnName="ProcessingMethodID" />
+                <ScalarProperty Name="InstrumentMethodId" ColumnName="InstrumentMethodId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SampleType" ColumnName="SampleType" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MasterSequence_Injections">
+            <EntityTypeMapping TypeName="AIVISModel.MasterSequence_Injections">
+              <MappingFragment StoreEntitySet="MasterSequence_Injections">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="InjectionCount" ColumnName="InjectionCount" />
+                <ScalarProperty Name="InjectionName" ColumnName="InjectionName" />
+                <ScalarProperty Name="MasterSequenceId" ColumnName="MasterSequenceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sequences">
+            <EntityTypeMapping TypeName="AIVISModel.Sequence">
+              <MappingFragment StoreEntitySet="Sequence">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="ProcessingStatus" ColumnName="ProcessingStatus" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="NoOfTest" ColumnName="NoOfTest" />
+                <ScalarProperty Name="TestName" ColumnName="TestName" />
+                <ScalarProperty Name="ARNo" ColumnName="ARNo" />
+                <ScalarProperty Name="BatchNo" ColumnName="BatchNo" />
+                <ScalarProperty Name="SequenceName" ColumnName="SequenceName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sequence_Details">
+            <EntityTypeMapping TypeName="AIVISModel.Sequence_Details">
+              <MappingFragment StoreEntitySet="Sequence_Details">
+                <ScalarProperty Name="TotalVolume_Dissolution" ColumnName="TotalVolume_Dissolution" />
+                <ScalarProperty Name="SampleWithdraw_Dissolution" ColumnName="SampleWithdraw_Dissolution" />
+                <ScalarProperty Name="TimeInterval_Dissolution" ColumnName="TimeInterval_Dissolution" />
+                <ScalarProperty Name="Condition" ColumnName="Condition" />
+                <ScalarProperty Name="Pack" ColumnName="Pack" />
+                <ScalarProperty Name="Stage" ColumnName="Stage" />
+                <ScalarProperty Name="Label_Claim" ColumnName="Label_Claim" />
+                <ScalarProperty Name="Avg_Sample" ColumnName="Avg_Sample" />
+                <ScalarProperty Name="Weight_Sample" ColumnName="Weight_Sample" />
+                <ScalarProperty Name="SequenceId" ColumnName="SequenceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sequence_Status">
+            <EntityTypeMapping TypeName="AIVISModel.Sequence_Status">
+              <MappingFragment StoreEntitySet="Sequence_Status">
+                <ScalarProperty Name="SeqStatus" ColumnName="SeqStatus" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Chrom_InstrumentMethod">
+            <EntityTypeMapping TypeName="AIVISModel.Chrom_InstrumentMethod">
+              <MappingFragment StoreEntitySet="Chrom_InstrumentMethod">
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Chromeleon_Id" ColumnName="Chromeleon_Id" />
+                <ScalarProperty Name="DataVaultId" ColumnName="DataVaultId" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Chrom_ProcessingMethod">
+            <EntityTypeMapping TypeName="AIVISModel.Chrom_ProcessingMethod">
+              <MappingFragment StoreEntitySet="Chrom_ProcessingMethod">
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Chromeleon_Id" ColumnName="Chromeleon_Id" />
+                <ScalarProperty Name="DataVaultId" ColumnName="DataVaultId" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

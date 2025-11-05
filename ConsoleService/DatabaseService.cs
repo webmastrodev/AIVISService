@@ -306,7 +306,53 @@ namespace ConsoleService
             return trailDetails.Id;
         }
 
-        
+        public int ManageInstrumentMethod(IInstrumentMethod instrumentMethod, int siteId, int dataVaultId, int userId)
+        {
+            var InsMethod = aivisEntities.Chrom_InstrumentMethod.Where(w => w.Chromeleon_Id == instrumentMethod.Id).FirstOrDefault();
+
+            if (InsMethod == null)
+            {
+                InsMethod = new Model.Chrom_InstrumentMethod();
+                InsMethod.AddedBy = userId;
+                InsMethod.AddedOn = DateTime.Now;
+                InsMethod.Chromeleon_Id = instrumentMethod.Id;
+
+                aivisEntities.Chrom_InstrumentMethod.Add(InsMethod);
+            }
+
+            InsMethod.SiteId = siteId;
+            InsMethod.DataVaultId = dataVaultId;
+            InsMethod.Name = instrumentMethod.Name;
+            InsMethod.URL = instrumentMethod.Url.ToString();
+
+            aivisEntities.SaveChanges();
+
+            return InsMethod.Id;
+        }
+
+        public int ManageProcessingMethod(IProcessingMethod processingMethod, int siteId, int dataVaultId, int userId)
+        {
+            var ProcMethod = aivisEntities.Chrom_ProcessingMethod.Where(w => w.Chromeleon_Id == processingMethod.Id).FirstOrDefault();
+
+            if (ProcMethod == null)
+            {
+                ProcMethod = new Model.Chrom_ProcessingMethod();
+                ProcMethod.AddedBy = userId;
+                ProcMethod.AddedOn = DateTime.Now;
+                ProcMethod.Chromeleon_Id = processingMethod.Id;
+
+                aivisEntities.Chrom_ProcessingMethod.Add(ProcMethod);
+            }
+
+            ProcMethod.SiteId = siteId;
+            ProcMethod.DataVaultId = dataVaultId;
+            ProcMethod.Name = processingMethod.Name;
+            ProcMethod.URL = processingMethod.Url.ToString();
+
+            aivisEntities.SaveChanges();
+
+            return ProcMethod.Id;
+        }
 
 
     }

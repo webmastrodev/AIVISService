@@ -35,6 +35,28 @@
         <AssociationConnector Association="AIVISModel.FK_Chrom_DataVault_Sites" />
         <AssociationConnector Association="AIVISModel.FK_User_Sites_Sites" />
         <AssociationConnector Association="AIVISModel.FK_User_Sites_Users" />
+        <EntityTypeShape EntityType="AIVISModel.MasterSequence" Width="1.5" PointX="12" PointY="13" />
+        <EntityTypeShape EntityType="AIVISModel.MasterSequence_Injections" Width="1.5" PointX="14.25" PointY="14.25" />
+        <EntityTypeShape EntityType="AIVISModel.Sequence" Width="1.5" PointX="5.25" PointY="0.75" />
+        <EntityTypeShape EntityType="AIVISModel.Sequence_Details" Width="1.5" PointX="7.5" PointY="19.125" />
+        <EntityTypeShape EntityType="AIVISModel.Sequence_Status" Width="1.5" PointX="3" PointY="16.5" />
+        <AssociationConnector Association="AIVISModel.FK_MasterSequence_Injections_MaserSequence" />
+        <AssociationConnector Association="AIVISModel.FK_MasterSequence_Sites" />
+        <AssociationConnector Association="AIVISModel.FK_MasterSequence_Users" />
+        <AssociationConnector Association="AIVISModel.FK_MasterSequence_Users1" />
+        <AssociationConnector Association="AIVISModel.FK_Sequence_Details_Sequence" />
+        <AssociationConnector Association="AIVISModel.FK_Sequence_Sequence_Status" />
+        <AssociationConnector Association="AIVISModel.FK_Sequence_Users" />
+        <EntityTypeShape EntityType="AIVISModel.Chrom_InstrumentMethod" Width="1.5" PointX="9.75" PointY="1.125" />
+        <EntityTypeShape EntityType="AIVISModel.Chrom_ProcessingMethod" Width="1.5" PointX="9.75" PointY="10.125" />
+        <AssociationConnector Association="AIVISModel.FK_Chrom_InstrumentMethod_Chrom_DataVault" />
+        <AssociationConnector Association="AIVISModel.FK_Chrom_ProcessingMethod_Chrom_DataVault" />
+        <AssociationConnector Association="AIVISModel.FK_Chrom_InstrumentMethod_Sites" />
+        <AssociationConnector Association="AIVISModel.FK_Chrom_InstrumentMethod_Users" />
+        <AssociationConnector Association="AIVISModel.FK_MasterSequence_Chrom_InstrumentMethod" />
+        <AssociationConnector Association="AIVISModel.FK_Chrom_ProcessingMethod_Sites" />
+        <AssociationConnector Association="AIVISModel.FK_Chrom_ProcessingMethod_Users" />
+        <AssociationConnector Association="AIVISModel.FK_MasterSequence_Chrom_ProcessingMethod" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

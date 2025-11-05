@@ -18,6 +18,8 @@ namespace ConsoleService.Model
         public Chrom_DataVault()
         {
             this.Chrom_Sequence = new HashSet<Chrom_Sequence>();
+            this.Chrom_InstrumentMethod = new HashSet<Chrom_InstrumentMethod>();
+            this.Chrom_ProcessingMethod = new HashSet<Chrom_ProcessingMethod>();
         }
     
         public int Id { get; set; }
@@ -34,5 +36,9 @@ namespace ConsoleService.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chrom_Sequence> Chrom_Sequence { get; set; }
         public virtual Site Site { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Chrom_InstrumentMethod> Chrom_InstrumentMethod { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Chrom_ProcessingMethod> Chrom_ProcessingMethod { get; set; }
     }
 }

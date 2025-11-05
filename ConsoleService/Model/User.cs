@@ -26,6 +26,11 @@ namespace ConsoleService.Model
             this.Chrom_DataVault = new HashSet<Chrom_DataVault>();
             this.Chrom_Server = new HashSet<Chrom_Server>();
             this.User_Sites = new HashSet<User_Sites>();
+            this.MasterSequences = new HashSet<MasterSequence>();
+            this.MasterSequences1 = new HashSet<MasterSequence>();
+            this.Sequences = new HashSet<Sequence>();
+            this.Chrom_InstrumentMethod = new HashSet<Chrom_InstrumentMethod>();
+            this.Chrom_ProcessingMethod = new HashSet<Chrom_ProcessingMethod>();
         }
     
         public int Id { get; set; }
@@ -60,5 +65,15 @@ namespace ConsoleService.Model
         public virtual ICollection<Chrom_Server> Chrom_Server { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User_Sites> User_Sites { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MasterSequence> MasterSequences { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MasterSequence> MasterSequences1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sequence> Sequences { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Chrom_InstrumentMethod> Chrom_InstrumentMethod { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Chrom_ProcessingMethod> Chrom_ProcessingMethod { get; set; }
     }
 }

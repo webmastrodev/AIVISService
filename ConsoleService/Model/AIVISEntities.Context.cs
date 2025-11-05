@@ -37,5 +37,12 @@ namespace ConsoleService.Model
         public virtual DbSet<Chrom_DataVault> Chrom_DataVault { get; set; }
         public virtual DbSet<Chrom_Server> Chrom_Server { get; set; }
         public virtual DbSet<User_Sites> User_Sites { get; set; }
+        public virtual DbSet<MasterSequence> MasterSequences { get; set; }
+        public virtual DbSet<MasterSequence_Injections> MasterSequence_Injections { get; set; }
+        public virtual DbSet<Sequence> Sequences { get; set; }
+        public virtual DbSet<Sequence_Details> Sequence_Details { get; set; }
+        public virtual DbSet<Sequence_Status> Sequence_Status { get; set; }
+        public virtual DbSet<Chrom_InstrumentMethod> Chrom_InstrumentMethod { get; set; }
+        public virtual DbSet<Chrom_ProcessingMethod> Chrom_ProcessingMethod { get; set; }
     }
 }

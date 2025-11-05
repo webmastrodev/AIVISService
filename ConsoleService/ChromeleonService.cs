@@ -18,6 +18,7 @@ using ConsoleService.Core;
 using Thermo.Chromeleon.Sdk.Interfaces.Types;
 using System.Management;
 using Thermo.Chromeleon.Sdk.Interfaces.Types.Collections;
+using System.Diagnostics;
 
 namespace ConsoleService
 {
@@ -43,6 +44,9 @@ namespace ConsoleService
          * 
         */
 
+        string logName = "AIVISService"; // Or a custom log name
+       
+
         public string GetHDDSerialNo()
         {
             string hddSerialNo = string.Empty;
@@ -63,47 +67,59 @@ namespace ConsoleService
 
         public void ProcessBackService()
         {
-            SiteId = new DatabaseService().CheckAndRegisterClient(SiteCode, GetHDDSerialNo());
-
-            if (SiteId == 0)
-                return;
-
-            //define scope
-            using (var scope = new CmSdkScope())
+            try
             {
-                //Ligon
-                CmSdk.Logon.DoLogon();
+                SiteId = new DatabaseService().CheckAndRegisterClient(SiteCode, GetHDDSerialNo());
 
-                //check if login success ?
-                if (CmSdk.Logon.IsLoggedOn)
+                if (SiteId == 0)
+                    return;
+
+                //define scope
+                using (var scope = new CmSdkScope())
                 {
-                    Console.WriteLine("Chomeleon Logged In Done...");
+                    //Ligon
+                    CmSdk.Logon.DoLogon();
 
-                    var itemFactory = CmSdk.GetItemFactory();
-
-                    foreach (var server in itemFactory.DataVaultServers)
+                    //check if login success ?
+                    if (CmSdk.Logon.IsLoggedOn)
                     {
-                        int ServerId = new DatabaseService().ManageChromeServe(server, SiteId, ServiceUserId);
+                        Console.WriteLine("Chomeleon Logged In Done...");
 
-                        //get server
-                        Console.WriteLine("Server: " + server.Name + "   Server URL: " + server.Url);
+                        var itemFactory = CmSdk.GetItemFactory();
 
-                        //get server and data vault
-                        foreach (var datavault in server.DataVaults)
+                        foreach (var server in itemFactory.DataVaultServers)
                         {
-                            int DataVaultId = new DatabaseService().ManageDataVault(datavault, ServerId, SiteId, ServiceUserId);
-                            Console.WriteLine("Data Vault: " + datavault.Name + "   Data Vault URL: " + datavault.Url);
+                            int ServerId = new DatabaseService().ManageChromeServe(server, SiteId, ServiceUserId);
 
-                            ProcessDataVault(datavault, DataVaultId, itemFactory);
-                            //ProcessSequence(datavault.Url, DataVaultId);
+                            //get server
+                            Console.WriteLine("Server: " + server.Name + "   Server URL: " + server.Url);
+
+                            //get server and data vault
+                            foreach (var datavault in server.DataVaults)
+                            {
+                                int DataVaultId = new DatabaseService().ManageDataVault(datavault, ServerId, SiteId, ServiceUserId);
+                                Console.WriteLine("Data Vault: " + datavault.Name + "   Data Vault URL: " + datavault.Url);
+
+                                ProcessDataVault(datavault, DataVaultId, itemFactory);
+                                //ProcessSequence(datavault.Url, DataVaultId);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    Console.WriteLine("Login Failed...");
+                    else
+                    {
+                        Console.WriteLine("Login Failed...");
+                    }
                 }
             }
+            catch (Thermo.Chromeleon.Sdk.Interfaces.Common.SdkException sdx)
+            {
+                EventLog.WriteEntry("Application", sdx.Message, EventLogEntryType.Error);
+            }
+            catch (Exception ex)
+            {
+                EventLog.WriteEntry("Application", ex.Message, EventLogEntryType.Error);
+            }
+            
 
             Console.ReadLine();
         }
@@ -156,7 +172,7 @@ namespace ConsoleService
                     {
                         var parentChildItem = child as IParentItem;
 
-                        if (parentChildItem is ISequence && child.Name == "QC046CARV_DS_1406A") // && child.Name == "QC046CARV_DS_1406A"
+                        if (parentChildItem is ISequence) // && child.Name == "QC046CARV_DS_1406A"
                         {
 
                             //Uncomment this
@@ -174,7 +190,7 @@ namespace ConsoleService
                             int SequenceId = new DatabaseService().ManageSequence(sequenceDetails);
 
                             var CustomSeq = parentChildItem as ISequence;
-
+                            ManageInstrumentManage(CustomSeq, SiteId, DataVaultId, ServiceUserId);
 
                             GetSequenceCustomInfo(parentChildItem as ISequence, out string SeqBatchNo, out string SeqProductName, out string SeqTestName, out string ARNo, out string InstrumentId);
 
@@ -187,11 +203,11 @@ namespace ConsoleService
                                     // Aborted Tun Manual & Instrument
                                     HandleAbortedRunInjection(SequenceId, parentChildItem as ISequence);
                                 }
-                                else if (atril.Operation.ToString() == "Deleted" && atril.ItemType.Name == "IInjection") //add condition of "Raw Data Contained"
-                                {
-                                    // Deleted Injection
-                                    ManageTrails(SequenceId, atril.Number, atril.Description, "DeletedInjection", SeqBatchNo, SeqProductName, SeqTestName, atril.TransactionLogEntry.StartTime.LocalDateTime, ARNo, InstrumentId, atril.TransactionLogEntry.User.Name);
-                                }
+                                //else if (atril.Operation.ToString() == "Deleted" && atril.ItemType.Name == "IInjection") //add condition of "Raw Data Contained"
+                                //{
+                                //    // Deleted Injection
+                                //    ManageTrails(SequenceId, atril.Number, atril.Description, "DeletedInjection", SeqBatchNo, SeqProductName, SeqTestName, atril.TransactionLogEntry.StartTime.LocalDateTime, ARNo, InstrumentId, atril.TransactionLogEntry.User.Name);
+                                //}
 
                                 //else if (atril.Operation.ToString() == "Changed" && atril.ItemType.Name == "IProcessingMethod")
                                 //{
@@ -514,6 +530,24 @@ namespace ConsoleService
             return TrailId;
         }
 
+        void ManageInstrumentManage(ISequence sequence, int siteId, int dataVaultId, int userId)
+        {
+            var Injections = sequence.Injections;
 
+            foreach (var inject in Injections)
+            {
+                IProcessingMethod processingMethod = inject.ProcessingMethod;
+                if (processingMethod != null)
+                {
+                    new DatabaseService().ManageProcessingMethod(processingMethod, siteId, dataVaultId, userId);
+                }
+
+                IInstrumentMethod instrumentMethod = inject.InstrumentMethod;
+                if (instrumentMethod != null)
+                {
+                    new DatabaseService().ManageInstrumentMethod(instrumentMethod, siteId, dataVaultId, userId);
+                }
+            }
+        }
     }
 }

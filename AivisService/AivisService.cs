@@ -19,6 +19,8 @@ using Thermo.Chromeleon.Sdk.Interfaces;
 using Thermo.Chromeleon.Sdk.UserManagement;
 using AivisService.Core.Dtos;
 using AivisService.Core;
+using System.Threading;
+
 
 namespace AivisService
 {
@@ -30,6 +32,7 @@ namespace AivisService
         string SequenceNotReviewedTrailType = ConfigurationManager.AppSettings["SequenceNotReviewedTrailType"];
         string SiteCode = ConfigurationManager.AppSettings["SiteCode"];
         int SiteId = 0;
+        System.Timers.Timer timer = null;
 
         public AivisService()
         {
@@ -57,7 +60,7 @@ namespace AivisService
 
             if (SiteId != 0)
             {
-                Timer timer = new Timer
+                timer = new System.Timers.Timer
                 {
                     Interval = 60000 // 60 seconds
                 };
@@ -78,7 +81,21 @@ namespace AivisService
         {
             // TODO: Insert monitoring activities here.
             eventLog1.WriteEntry("Started Monitoring The Chromeleon Critical Exception", EventLogEntryType.Information, eventId++);
-            ProcessBackService();
+
+            Thread staThread = new Thread(() =>
+            {
+                try
+                {
+                    ProcessBackService();
+                }
+                catch (Exception ex)
+                {
+                    EventLog.WriteEntry("Chromeleon Service error: " + ex.Message);
+                }
+            });
+
+            staThread.SetApartmentState(ApartmentState.STA);
+            staThread.Start();
         }
 
         [DllImport("advapi32.dll", SetLastError = true)]
@@ -119,6 +136,8 @@ namespace AivisService
 
         public void ProcessBackService()
         {
+            eventLog1.WriteEntry("Inside Proessing Sequences", EventLogEntryType.Information, eventId++);
+
             //define scope
             using (var scope = new CmSdkScope())
             {
@@ -128,7 +147,7 @@ namespace AivisService
                 //check if login success ?
                 if (CmSdk.Logon.IsLoggedOn)
                 {
-                    Console.WriteLine("Chomeleon Logged In Done...");
+                    eventLog1.WriteEntry("Chomeleon Logged In Done...", EventLogEntryType.Information, eventId++);
 
                     var itemFactory = CmSdk.GetItemFactory();
 
@@ -137,16 +156,21 @@ namespace AivisService
                         int ServerId = new DatabaseService().ManageChromeServe(server, SiteId, ServiceUserId);
 
                         //get server
-                        Console.WriteLine("Server: " + server.Name + "   Server URL: " + server.Url);
+                        eventLog1.WriteEntry("Server: " + server.Name + "   Server URL: " + server.Url, EventLogEntryType.Information, eventId++);
 
                         //get server and data vault
                         foreach (var datavault in server.DataVaults)
                         {
-                            int DataVaultId = new DatabaseService().ManageDataVault(datavault, ServerId, SiteId, ServiceUserId);
-                            Console.WriteLine("Data Vault: " + datavault.Name + "   Data Vault URL: " + datavault.Url);
+                            //int DataVaultId = new DatabaseService().ManageDataVault(datavault, ServerId, SiteId, ServiceUserId);
+                            //Console.WriteLine("Data Vault: " + datavault.Name + "   Data Vault URL: " + datavault.Url);
 
-                            ProcessDataVault(datavault, DataVaultId, itemFactory);
-                            //ProcessSequence(datavault.Url, DataVaultId);
+                            //ProcessDataVault(datavault, DataVaultId, itemFactory);
+
+
+                            foreach (var item in datavault.Children)
+                            {
+                                Console.WriteLine(item.Name);
+                            }
                         }
                     }
                 }
@@ -157,6 +181,11 @@ namespace AivisService
             }
 
             Console.ReadLine();
+        }
+
+        private void GetInstrumentMethod(IDataVault datavault)
+        { 
+            
         }
 
         private void ProcessDataVault(IDataVault datavault, int DataVaultId, IItemFactory itemFactory)
@@ -207,7 +236,7 @@ namespace AivisService
                     {
                         var parentChildItem = child as IParentItem;
 
-                        if (parentChildItem is ISequence && child.Name == "QC046CARV_DS_1406A") // && child.Name == "QC046CARV_DS_1406A"
+                        if (parentChildItem is ISequence) // && child.Name == "QC046CARV_DS_1406A"
                         {
 
                             //Uncomment this
